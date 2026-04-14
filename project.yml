@@ -1,0 +1,47 @@
+name: Yapa
+options:
+  bundleIdPrefix: com.yapa
+  deploymentTarget:
+    macOS: "14.0"
+  xcodeVersion: "15.0"
+  generateEmptyDirectories: true
+
+packages:
+  Down:
+    url: https://github.com/iwasrobbed/Down
+    from: "0.11.0"
+  SQLite:
+    url: https://github.com/stephencelis/SQLite.swift
+    from: "0.15.0"
+
+targets:
+  Yapa:
+    type: application
+    platform: macOS
+    sources:
+      - Yapa
+      - Templates
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.yapa.app
+        PRODUCT_NAME: Yapa
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
+        INFOPLIST_FILE: Yapa/Resources/Info.plist
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        GENERATE_INFOPLIST_FILE: false
+        SWIFT_VERSION: "5.9"
+        MACOSX_DEPLOYMENT_TARGET: "14.0"
+        CODE_SIGN_STYLE: Automatic
+        ENABLE_HARDENED_RUNTIME: YES
+        COMBINE_HIDPI_IMAGES: YES
+        ALWAYS_SEARCH_USER_PATHS: NO
+      configs:
+        Debug:
+          CODE_SIGN_ENTITLEMENTS: Yapa/Resources/YapaDebug.entitlements
+        Release:
+          CODE_SIGN_ENTITLEMENTS: Yapa/Resources/Yapa.entitlements
+    dependencies:
+      - package: Down
+      - package: SQLite
+        product: SQLite

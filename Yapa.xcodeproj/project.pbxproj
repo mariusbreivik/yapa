@@ -1,0 +1,557 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0BF8B0C5F61C79282E3319E9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFEE10C9CD6A6B0ED8DB2AC /* ContentView.swift */; };
+		10BD20027BA6EAFD1D625917 /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2010061293DB5B657A4217A4 /* EditorView.swift */; };
+		29914D192F8BEBC500E27951 /* SearchQuerySanitizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B2B2B2B2B2B2B2B2B2B2B2 /* SearchQuerySanitizer.swift */; };
+		29914D1B2F8C232F00E27951 /* FileSystemServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29914D1A2F8C232F00E27951 /* FileSystemServiceTests.swift */; };
+		29914D1D2F8D57EA00E27951 /* SidebarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29914D1C2F8D57EA00E27951 /* SidebarViewTests.swift */; };
+		29914D232F8D8EE200E27951 /* Meeting Note.md in Resources */ = {isa = PBXBuildFile; fileRef = 29914D1F2F8D8EDA00E27951 /* Meeting Note.md */; };
+		29914D242F8D8EE300E27951 /* Daily Standup.md in Resources */ = {isa = PBXBuildFile; fileRef = 29914D202F8D8EDC00E27951 /* Daily Standup.md */; };
+		29914D252F8D8EE400E27951 /* Quick Note.md in Resources */ = {isa = PBXBuildFile; fileRef = 29914D212F8D8EDE00E27951 /* Quick Note.md */; };
+		29914D262F8D8EE500E27951 /* Weekly Review.md in Resources */ = {isa = PBXBuildFile; fileRef = 29914D222F8D8EE100E27951 /* Weekly Review.md */; };
+		59BBD69D11EC6CBB47B3A84E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E09C0564075B89A975BB7796 /* Assets.xcassets */; };
+		5DA9FCB6762F09CFED9F6379 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = B969CB7510EA2516EB29CDCC /* SQLite */; };
+		67F91C71BD8A01D49FD38F28 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD7019DF752FBFC03ADBDB0 /* SearchResultsView.swift */; };
+		70DB64EDF4D238EF1099F7AE /* YapaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EDC5151302783D02B5C425 /* YapaApp.swift */; };
+		93249775ABB663276CC72B91 /* FileSystemService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624B0097B0BB5CF61C4C3722 /* FileSystemService.swift */; };
+		973A43EBA26749AE57C46DE4 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF08EC4CAC7EC1EA72E7FA1 /* SidebarView.swift */; };
+		A1A1A1A1A1A1A1A1A1A1A1A1 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = B969CB7510EA2516EB29CDCC /* SQLite */; };
+		A2A2A2A2A2A2A2A2A2A2A2A2 /* Down in Frameworks */ = {isa = PBXBuildFile; productRef = BB04B44B5B91AAF394C5465A /* Down */; };
+		AABB11223344556677889900 /* QuickSwitcherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCC11223344556677889900 /* QuickSwitcherView.swift */; };
+		AB3F79AE139E724BD7601A61 /* Down in Frameworks */ = {isa = PBXBuildFile; productRef = BB04B44B5B91AAF394C5465A /* Down */; };
+		B1B1B1B1B1B1B1B1B1B1B1B1 /* SearchQuerySanitizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B2B2B2B2B2B2B2B2B2B2B2 /* SearchQuerySanitizer.swift */; };
+		CCDD11223344556677889900 /* SearchServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEE11223344556677889900 /* SearchServiceTests.swift */; };
+		DF8053CB52EE797E624F6AF9 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8E1DEE90C7C46DE4EB405C /* Note.swift */; };
+		E316B795982C407D17EACEFC /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F6C48B65FD8FDAF2D4D1FF /* SearchService.swift */; };
+		F2A92524EA7DB2FE331B9342 /* NoteListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CCFB31C29072B0C2222B1 /* NoteListView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FF4011223344556677889900 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 67951CF71F4DFCDAAA504831 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DDB44E800EA1C34592858BFF;
+			remoteInfo = Yapa;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1DD7019DF752FBFC03ADBDB0 /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
+		2010061293DB5B657A4217A4 /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
+		29914D1A2F8C232F00E27951 /* FileSystemServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemServiceTests.swift; sourceTree = "<group>"; };
+		29914D1C2F8D57EA00E27951 /* SidebarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarViewTests.swift; sourceTree = "<group>"; };
+		29914D1F2F8D8EDA00E27951 /* Meeting Note.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "Meeting Note.md"; sourceTree = "<group>"; };
+		29914D202F8D8EDC00E27951 /* Daily Standup.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "Daily Standup.md"; sourceTree = "<group>"; };
+		29914D212F8D8EDE00E27951 /* Quick Note.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "Quick Note.md"; sourceTree = "<group>"; };
+		29914D222F8D8EE100E27951 /* Weekly Review.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "Weekly Review.md"; sourceTree = "<group>"; };
+		2C8E1DEE90C7C46DE4EB405C /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
+		4BF08EC4CAC7EC1EA72E7FA1 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
+		5EFEE10C9CD6A6B0ED8DB2AC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		624B0097B0BB5CF61C4C3722 /* FileSystemService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemService.swift; sourceTree = "<group>"; };
+		71F6C48B65FD8FDAF2D4D1FF /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
+		7AA0F645DCBED0D516F92667 /* Yapa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yapa.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A9EDC5151302783D02B5C425 /* YapaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YapaApp.swift; sourceTree = "<group>"; };
+		B2B2B2B2B2B2B2B2B2B2B2B2 /* SearchQuerySanitizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchQuerySanitizer.swift; sourceTree = "<group>"; };
+		BBCC11223344556677889900 /* QuickSwitcherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickSwitcherView.swift; sourceTree = "<group>"; };
+		C32CCFB31C29072B0C2222B1 /* NoteListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteListView.swift; sourceTree = "<group>"; };
+		DDEE11223344556677889900 /* SearchServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchServiceTests.swift; sourceTree = "<group>"; };
+		E09C0564075B89A975BB7796 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EEFF11223344556677889900 /* YapaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YapaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F8C3FB38432F9BDC4E3D3211 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B3AEB9529D0E7E6F19F388AD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AB3F79AE139E724BD7601A61 /* Down in Frameworks */,
+				5DA9FCB6762F09CFED9F6379 /* SQLite in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FF2211223344556677889900 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A2A2A2A2A2A2A2A2A2A2A2A2 /* Down in Frameworks */,
+				A1A1A1A1A1A1A1A1A1A1A1A1 /* SQLite in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		05A40E2AE79426A0467EE925 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7AA0F645DCBED0D516F92667 /* Yapa.app */,
+				EEFF11223344556677889900 /* YapaTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		18E6381166B84597A5685C24 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5EFEE10C9CD6A6B0ED8DB2AC /* ContentView.swift */,
+				2010061293DB5B657A4217A4 /* EditorView.swift */,
+				C32CCFB31C29072B0C2222B1 /* NoteListView.swift */,
+				1DD7019DF752FBFC03ADBDB0 /* SearchResultsView.swift */,
+				4BF08EC4CAC7EC1EA72E7FA1 /* SidebarView.swift */,
+				BBCC11223344556677889900 /* QuickSwitcherView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		29914D1E2F8D8ED800E27951 /* Templates */ = {
+			isa = PBXGroup;
+			children = (
+				29914D1F2F8D8EDA00E27951 /* Meeting Note.md */,
+				29914D202F8D8EDC00E27951 /* Daily Standup.md */,
+				29914D212F8D8EDE00E27951 /* Quick Note.md */,
+				29914D222F8D8EE100E27951 /* Weekly Review.md */,
+			);
+			path = Templates;
+			sourceTree = "<group>";
+		};
+		875110C8B7DB72F6D4BC5406 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E09C0564075B89A975BB7796 /* Assets.xcassets */,
+				F8C3FB38432F9BDC4E3D3211 /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A209B55C86C079A792DF04A2 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A9EDC5151302783D02B5C425 /* YapaApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		ADC41F79D9A407A364EA80B5 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				624B0097B0BB5CF61C4C3722 /* FileSystemService.swift */,
+				B2B2B2B2B2B2B2B2B2B2B2B2 /* SearchQuerySanitizer.swift */,
+				71F6C48B65FD8FDAF2D4D1FF /* SearchService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		C8F7179879B10AC8F79B78A0 = {
+			isa = PBXGroup;
+			children = (
+				E0A45C9AFCB1F2E27B9EEE61 /* Yapa */,
+				05A40E2AE79426A0467EE925 /* Products */,
+				29914D1E2F8D8ED800E27951 /* Templates */,
+			);
+			sourceTree = "<group>";
+		};
+		DDA6BE5C27AD61BB1575D264 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2C8E1DEE90C7C46DE4EB405C /* Note.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E0A45C9AFCB1F2E27B9EEE61 /* Yapa */ = {
+			isa = PBXGroup;
+			children = (
+				A209B55C86C079A792DF04A2 /* App */,
+				DDA6BE5C27AD61BB1575D264 /* Models */,
+				875110C8B7DB72F6D4BC5406 /* Resources */,
+				ADC41F79D9A407A364EA80B5 /* Services */,
+				18E6381166B84597A5685C24 /* Views */,
+				EE0011223344556677889900 /* Tests */,
+			);
+			path = Yapa;
+			sourceTree = "<group>";
+		};
+		EE0011223344556677889900 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				DDEE11223344556677889900 /* SearchServiceTests.swift */,
+				29914D1A2F8C232F00E27951 /* FileSystemServiceTests.swift */,
+				29914D1C2F8D57EA00E27951 /* SidebarViewTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DDB44E800EA1C34592858BFF /* Yapa */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E34AA4A293A909B9F0830AE2 /* Build configuration list for PBXNativeTarget "Yapa" */;
+			buildPhases = (
+				FAD54CA8499EE0722917C7EF /* Sources */,
+				612812AA241EB8250D93A749 /* Resources */,
+				B3AEB9529D0E7E6F19F388AD /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Yapa;
+			packageProductDependencies = (
+				BB04B44B5B91AAF394C5465A /* Down */,
+				B969CB7510EA2516EB29CDCC /* SQLite */,
+			);
+			productName = Yapa;
+			productReference = 7AA0F645DCBED0D516F92667 /* Yapa.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FF0011223344556677889900 /* YapaTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FF1011223344556677889900 /* Build configuration list for PBXNativeTarget "YapaTests" */;
+			buildPhases = (
+				FF2011223344556677889900 /* Sources */,
+				FF2211223344556677889900 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FF3011223344556677889900 /* PBXTargetDependency */,
+			);
+			name = YapaTests;
+			packageProductDependencies = (
+				BB04B44B5B91AAF394C5465A /* Down */,
+				B969CB7510EA2516EB29CDCC /* SQLite */,
+			);
+			productName = YapaTests;
+			productReference = EEFF11223344556677889900 /* YapaTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		67951CF71F4DFCDAAA504831 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 2640;
+				TargetAttributes = {
+					DDB44E800EA1C34592858BFF = {
+						ProvisioningStyle = Automatic;
+					};
+					FF0011223344556677889900 = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 829E48BC2F49A560BFADFCE8 /* Build configuration list for PBXProject "Yapa" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = C8F7179879B10AC8F79B78A0;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				0B71106A33B4A4CBA153C8F4 /* XCRemoteSwiftPackageReference "Down" */,
+				EFA4572640FF20064A533AAF /* XCRemoteSwiftPackageReference "SQLite" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 05A40E2AE79426A0467EE925 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DDB44E800EA1C34592858BFF /* Yapa */,
+				FF0011223344556677889900 /* YapaTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		612812AA241EB8250D93A749 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				29914D242F8D8EE300E27951 /* Daily Standup.md in Resources */,
+				29914D232F8D8EE200E27951 /* Meeting Note.md in Resources */,
+				29914D252F8D8EE400E27951 /* Quick Note.md in Resources */,
+				59BBD69D11EC6CBB47B3A84E /* Assets.xcassets in Resources */,
+				29914D262F8D8EE500E27951 /* Weekly Review.md in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FAD54CA8499EE0722917C7EF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0BF8B0C5F61C79282E3319E9 /* ContentView.swift in Sources */,
+				10BD20027BA6EAFD1D625917 /* EditorView.swift in Sources */,
+				93249775ABB663276CC72B91 /* FileSystemService.swift in Sources */,
+				B1B1B1B1B1B1B1B1B1B1B1B1 /* SearchQuerySanitizer.swift in Sources */,
+				DF8053CB52EE797E624F6AF9 /* Note.swift in Sources */,
+				F2A92524EA7DB2FE331B9342 /* NoteListView.swift in Sources */,
+				67F91C71BD8A01D49FD38F28 /* SearchResultsView.swift in Sources */,
+				E316B795982C407D17EACEFC /* SearchService.swift in Sources */,
+				973A43EBA26749AE57C46DE4 /* SidebarView.swift in Sources */,
+				70DB64EDF4D238EF1099F7AE /* YapaApp.swift in Sources */,
+				AABB11223344556677889900 /* QuickSwitcherView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FF2011223344556677889900 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CCDD11223344556677889900 /* SearchServiceTests.swift in Sources */,
+				29914D1D2F8D57EA00E27951 /* SidebarViewTests.swift in Sources */,
+				29914D192F8BEBC500E27951 /* SearchQuerySanitizer.swift in Sources */,
+				29914D1B2F8C232F00E27951 /* FileSystemServiceTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FF3011223344556677889900 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DDB44E800EA1C34592858BFF /* Yapa */;
+			targetProxy = FF4011223344556677889900 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		3E5B4F5B0EC00B58E2210513 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = Yapa/Resources/YapaDebug.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Yapa/Resources/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yapa.app;
+				PRODUCT_NAME = Yapa;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		9E89E8BCDC8DF85764E0A760 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = Yapa/Resources/Yapa.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Yapa/Resources/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yapa.app;
+				PRODUCT_NAME = Yapa;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		B6BDF9332732D59DECAE5713 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		CBB932D356AD35D71E0503D5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+			};
+			name = Debug;
+		};
+		FF5011223344556677889900 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yapa.app.tests;
+				PRODUCT_NAME = YapaTests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		FF5111223344556677889900 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yapa.app.tests;
+				PRODUCT_NAME = YapaTests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		829E48BC2F49A560BFADFCE8 /* Build configuration list for PBXProject "Yapa" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CBB932D356AD35D71E0503D5 /* Debug */,
+				B6BDF9332732D59DECAE5713 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E34AA4A293A909B9F0830AE2 /* Build configuration list for PBXNativeTarget "Yapa" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3E5B4F5B0EC00B58E2210513 /* Debug */,
+				9E89E8BCDC8DF85764E0A760 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		FF1011223344556677889900 /* Build configuration list for PBXNativeTarget "YapaTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FF5011223344556677889900 /* Debug */,
+				FF5111223344556677889900 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0B71106A33B4A4CBA153C8F4 /* XCRemoteSwiftPackageReference "Down" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/iwasrobbed/Down";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.11.0;
+			};
+		};
+		EFA4572640FF20064A533AAF /* XCRemoteSwiftPackageReference "SQLite" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stephencelis/SQLite.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.15.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B969CB7510EA2516EB29CDCC /* SQLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EFA4572640FF20064A533AAF /* XCRemoteSwiftPackageReference "SQLite" */;
+			productName = SQLite;
+		};
+		BB04B44B5B91AAF394C5465A /* Down */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0B71106A33B4A4CBA153C8F4 /* XCRemoteSwiftPackageReference "Down" */;
+			productName = Down;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 67951CF71F4DFCDAAA504831 /* Project object */;
+}
