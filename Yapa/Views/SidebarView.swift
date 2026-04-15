@@ -121,10 +121,10 @@ struct SidebarView: View {
                     .lineLimit(1)
                 
                 HStack(spacing: 6) {
-                    statPill(value: "\(fileSystemService.projectCount)", symbol: "folder")
-                    statPill(value: "\(fileSystemService.allNotes.count)", symbol: "doc.text")
-                    statPill(value: "\(fileSystemService.pinnedNotes.count)", symbol: "pin.fill")
-                    statPill(value: "\(fileSystemService.recentNotes.count)", symbol: "clock")
+                    statPill(value: "\(fileSystemService.projectCount)", symbol: "folder", tooltip: "Top-level project folders in this Yapa workspace")
+                    statPill(value: "\(fileSystemService.allNotes.count)", symbol: "doc.text", tooltip: "All notes in the current Yapa workspace")
+                    statPill(value: "\(fileSystemService.pinnedNotes.count)", symbol: "pin.fill", tooltip: "Notes pinned for quick access")
+                    statPill(value: "\(fileSystemService.recentNotes.count)", symbol: "clock", tooltip: "Most recently opened notes")
                 }
             }
             
@@ -239,16 +239,20 @@ struct SidebarView: View {
         .padding(.top, 4)
     }
 
-    private func statPill(value: String, symbol: String) -> some View {
-        Label(value, systemImage: symbol)
-            .font(.caption2.weight(.medium))
-            .foregroundColor(.secondary)
-            .padding(.horizontal, 8)
-            .padding(.vertical, 3)
-            .background(Color.secondary.opacity(0.08))
-            .clipShape(Capsule())
+    private func statPill(value: String, symbol: String, tooltip: String) -> some View {
+        HStack(spacing: 4) {
+            Image(systemName: symbol)
+            Text(value)
+                .foregroundColor(Color.orange.opacity(0.9))
+        }
+        .font(.caption2.weight(.medium))
+        .padding(.horizontal, 6)
+        .padding(.vertical, 2)
+        .background(Color.secondary.opacity(0.08))
+        .clipShape(Capsule())
+        .help(tooltip)
     }
-    
+
     private func createNewNote() {
         let folder = selectedFolder?.url ?? fileSystemService.folderStructure.first?.url
         guard let folder else { return }
@@ -505,7 +509,7 @@ struct FolderRowView: View {
                             .lineLimit(1)
 
                         if let projectStats, depth == 1 {
-                            statTag("\(projectStats.notes)", "notes")
+                            statPill(value: "\(projectStats.notes)", symbol: "doc.text", tooltip: "Notes in this project")
                         }
                     }
                 }
@@ -642,14 +646,18 @@ struct FolderRowView: View {
         FileSystemService.shared
     }
 
-    private func statTag(_ value: String, _ label: String) -> some View {
-        Text("\(value) \(label)")
-            .font(.caption2.weight(.medium))
-            .foregroundColor(.secondary)
-            .padding(.horizontal, 6)
-            .padding(.vertical, 2)
-            .background(Color.secondary.opacity(0.08))
-            .clipShape(Capsule())
+    private func statPill(value: String, symbol: String, tooltip: String) -> some View {
+        HStack(spacing: 4) {
+            Image(systemName: symbol)
+            Text(value)
+                .foregroundColor(Color.orange.opacity(0.9))
+        }
+        .font(.caption2.weight(.medium))
+        .padding(.horizontal, 6)
+        .padding(.vertical, 2)
+        .background(Color.secondary.opacity(0.08))
+        .clipShape(Capsule())
+        .help(tooltip)
     }
 
     private func formatCount(_ count: Int) -> String {
