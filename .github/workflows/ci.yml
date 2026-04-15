@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: macos-latest
+
+    env:
+      XCODE_PROJECT: Yapa.xcodeproj
+      XCODE_SCHEME: Yapa
+      XCODE_CONFIG: Debug
+      DERIVED_DATA_PATH: derived-data
+      BUILD_LOG: build.log
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache Swift packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/Library/Caches/org.swift.swiftpm
+            ~/Library/Developer/Xcode/DerivedData
+            .build
+          key: ${{ runner.os }}-swiftpm-${{ hashFiles('Yapa.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-swiftpm-
+
+      - name: Resolve packages
+        run: xcodebuild -project "$XCODE_PROJECT" -scheme "$XCODE_SCHEME" -configuration "$XCODE_CONFIG" -resolvePackageDependencies
+
+      - name: Build
+        run: xcodebuild -project "$XCODE_PROJECT" -scheme "$XCODE_SCHEME" -configuration "$XCODE_CONFIG" -derivedDataPath "$DERIVED_DATA_PATH" build | tee "$BUILD_LOG"
+
+      - name: Test
+        run: xcodebuild test -project "$XCODE_PROJECT" -scheme "$XCODE_SCHEME" -configuration "$XCODE_CONFIG" -derivedDataPath "$DERIVED_DATA_PATH" | tee -a "$BUILD_LOG"
+
+      - name: Upload build log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xcodebuild-log
+          path: ${{ env.BUILD_LOG }}
+          if-no-files-found: warn

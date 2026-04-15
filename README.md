@@ -48,6 +48,18 @@ xcodebuild test -project Yapa.xcodeproj -scheme Yapa -configuration Debug -only-
 - `swift Scripts/GenerateAppIcon.swift` regenerates the app icon set in `Yapa/Resources/Assets.xcassets/AppIcon.appiconset`
 - `bash Scripts/build-unsigned-dmg.sh` builds a release app and writes `dist/Yapa-<version>-unsigned.dmg`
 
+## GitHub Actions
+
+- `CI` runs on `pull_request` and pushes to `main`, then builds and tests the app before merge.
+- `Release` is manual and creates an unsigned versioned `.dmg` for distribution as a GitHub Release asset.
+- The release workflow accepts `version` and optional `build_number` inputs.
+
+Recommended branch protection for `main`:
+
+- Require the `CI` workflow to pass before merging.
+- Require pull requests for all changes.
+- Restrict direct pushes to `main`.
+
 ## Keyboard Shortcuts
 
 - `⌘N` New Note

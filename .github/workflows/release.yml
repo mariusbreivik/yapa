@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Release version, for example 1.0.1
+        required: true
+        type: string
+      build_number:
+        description: Optional build number
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: macos-latest
+
+    env:
+      XCODE_PROJECT: Yapa.xcodeproj
+      XCODE_SCHEME: Yapa
+      XCODE_CONFIG: Release
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build DMG
+        env:
+          MARKETING_VERSION: ${{ inputs.version }}
+          CURRENT_PROJECT_VERSION: ${{ inputs.build_number }}
+        run: bash Scripts/build-unsigned-dmg.sh
+
+      - name: Rename DMG
+        run: |
+          VERSION="${{ inputs.version }}"
+          SOURCE="dist/Yapa-${VERSION}-unsigned.dmg"
+          TARGET="dist/Yapa-${VERSION}.dmg"
+          if [ -f "$SOURCE" ]; then
+            mv "$SOURCE" "$TARGET"
+          else
+            echo "Missing DMG: $SOURCE" >&2
+            exit 1
+          fi
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ inputs.version }}
+          name: Yapa v${{ inputs.version }}
+          generate_release_notes: true
+          files: dist/Yapa-${{ inputs.version }}.dmg
