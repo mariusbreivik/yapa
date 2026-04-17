@@ -52,15 +52,15 @@ xcodebuild test -project Yapa.xcodeproj -scheme Yapa -configuration Debug -only-
 
 - `CI` runs on `pull_request` and pushes to `main`, then builds and tests the app before merge.
 - `Tag on Merge` creates the next semantic version tag automatically when a PR merges to `main`.
-- `Release` is triggered manually for a tag and creates an unsigned versioned `.dmg` for distribution as a GitHub Release asset.
-- The release workflow accepts a `tag` input and optional `build_number` input.
+- `Release` is triggered manually, checks out `main`, discovers the latest tag on `main`, and creates an unsigned versioned `.dmg` for distribution as a GitHub Release asset.
+- The release workflow accepts an optional `build_number` input.
 - Conventional Commit-style PR titles drive semver bumps: `feat:` for minor, `fix:` for patch, and `feat!:` or `BREAKING CHANGE:` for major.
 
 ## Versioning
 
 - The app displays the current version as `vX.Y.Z (build)` in the launch screen and Help window.
 - The UI reads from bundle metadata, so the running app shows the same version that was stamped during release.
-- Release builds derive `MARKETING_VERSION` from the Git tag and `CURRENT_PROJECT_VERSION` from the release workflow input or workflow run number.
+- Release builds derive `MARKETING_VERSION` from the latest tag on `main` and `CURRENT_PROJECT_VERSION` from the release workflow input or workflow run number.
 
 Recommended branch protection for `main`:
 
