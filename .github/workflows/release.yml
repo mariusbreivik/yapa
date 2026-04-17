@@ -88,6 +88,7 @@ jobs:
             ])
 
             const seen = new Set()
+            const normalizeTitle = (title) => title.replace(/^\w+(\(.+\))?:\s*/i, '').trim()
 
             for (const block of commits) {
               const [sha, title = ''] = block.split('\n')
@@ -101,6 +102,7 @@ jobs:
               else if (/^refactor(\(.+\))?:/i.test(title) || /^chore(\(.+\))?:/i.test(title)) section = 'Changed'
 
               let prNumber = null
+              let author = null
               try {
                 const prs = await github.rest.repos.listPullRequestsAssociatedWithCommit({
                   owner: context.repo.owner,
@@ -108,14 +110,17 @@ jobs:
                   commit_sha: sha,
                 })
                 prNumber = prs.data[0]?.number ?? null
+                author = prs.data[0]?.user?.login ?? null
               } catch {
                 prNumber = null
+                author = null
               }
 
+              const cleanTitle = normalizeTitle(title)
+              const authorSuffix = author ? ` by @${author}` : ''
               const label = prNumber ? `#${prNumber}` : sha.slice(0, 7)
-              const entry = prNumber
-                ? `- ${title.replace(/^\w+(\(.+\))?:\s*/i, '')} ([${label}](${context.payload.repository.html_url}/pull/${prNumber}))`
-                : `- ${title.replace(/^\w+(\(.+\))?:\s*/i, '')} (${label})`
+              const link = prNumber ? ` ([${label}](${context.payload.repository.html_url}/pull/${prNumber}))` : ` (${label})`
+              const entry = `- ${cleanTitle}${authorSuffix}${link}`
 
               sections.get(section).push(entry)
             }
