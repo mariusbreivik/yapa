@@ -10,6 +10,15 @@
 - Add or update a test for every new feature or behavior change.
 - Do not revert unrelated work in the shared tree.
 
+## GitHub Issue Workflow
+
+- Always start from `main`: `git checkout main` and `git pull --ff-only` or `git fetch` plus a fast-forward update.
+- Create a new branch for the issue work before editing.
+- Link the branch and PR to the issue number in the branch name, commit message, and PR body when practical.
+- Use a semver-style commit message: `feat:` for new behavior, `fix:` for bug fixes, `chore:` for maintenance, `docs:` for documentation.
+- Open a pull request for the branch before closing the issue.
+- Close the issue only after the PR is created and the change is ready to merge, using a closing reference like `Closes #<issue>` in the PR body.
+
 ## Commands
 
 - Build: `xcodebuild -project Yapa.xcodeproj -scheme Yapa -configuration Debug build`
