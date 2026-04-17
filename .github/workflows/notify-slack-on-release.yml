@@ -1,8 +1,9 @@
 name: Notify Slack on Release
 
 on:
-  release:
-    types: [published]
+  workflow_run:
+    workflows: [Release]
+    types: [completed]
 
 permissions:
   contents: read
@@ -11,7 +12,23 @@ jobs:
   notify:
     runs-on: ubuntu-latest
 
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
     steps:
+      - name: Get latest release
+        id: release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: release } = await github.rest.repos.getLatestRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            })
+
+            core.setOutput('name', release.name || release.tag_name)
+            core.setOutput('tag', release.tag_name)
+            core.setOutput('url', release.html_url)
+
       - name: Send Slack notification
         uses: slackapi/slack-github-action@v1.27.0
         env:
@@ -20,5 +37,5 @@ jobs:
           channel-id: C0ATTTJNA7N
           payload: |
             {
-              "text": ":rocket: New Yapa release published: *${{ github.event.release.name }}*\n<${{ github.event.release.html_url }}|View release>\nTag: `${{ github.event.release.tag_name }}`"
+              "text": ":rocket: New Yapa release published: *${{ steps.release.outputs.name }}*\n<${{ steps.release.outputs.url }}|View release>\nTag: `${{ steps.release.outputs.tag }}`"
             }
