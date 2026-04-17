@@ -483,9 +483,9 @@ struct LaunchScreenView: View {
                 }
             }
 
-            Text(AppVersionInfo.current.displayString)
+            Text("Version \(AppVersionInfo.current.displayString)")
                 .font(.caption2)
-                .foregroundColor(.secondary)
+                .foregroundColor(Color.orange.opacity(0.9))
                 .frame(maxWidth: .infinity, alignment: .trailing)
                 .padding(.top, 2)
         }
