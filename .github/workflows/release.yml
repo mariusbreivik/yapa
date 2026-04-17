@@ -59,10 +59,89 @@ jobs:
             exit 1
           fi
 
+      - name: Generate release notes
+        id: release_notes
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('node:fs')
+            const { execSync } = require('node:child_process')
+
+            const currentTag = '${{ steps.release_tag.outputs.tag }}'
+            const previousTag = execSync(
+              `git tag --sort=-v:refname | grep '^v' | grep -v '^${currentTag}$' | head -n 1`,
+              { encoding: 'utf8' }
+            ).trim()
+
+            const range = previousTag ? `${previousTag}..HEAD` : 'HEAD'
+            const commits = execSync(`git log --format=%H%n%s%n%b%n--END-- ${range}`, { encoding: 'utf8' })
+              .split('\n--END--\n')
+              .map(block => block.trim())
+              .filter(Boolean)
+
+            const sections = new Map([
+              ['Added', []],
+              ['Changed', []],
+              ['Fixed', []],
+              ['Docs', []],
+              ['Other', []],
+            ])
+
+            const seen = new Set()
+
+            for (const block of commits) {
+              const [sha, title = ''] = block.split('\n')
+              if (!sha || seen.has(sha)) continue
+              seen.add(sha)
+
+              let section = 'Other'
+              if (/^feat(\(.+\))?:/i.test(title)) section = 'Added'
+              else if (/^fix(\(.+\))?:/i.test(title)) section = 'Fixed'
+              else if (/^docs(\(.+\))?:/i.test(title)) section = 'Docs'
+              else if (/^refactor(\(.+\))?:/i.test(title) || /^chore(\(.+\))?:/i.test(title)) section = 'Changed'
+
+              let prNumber = null
+              try {
+                const prs = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  commit_sha: sha,
+                })
+                prNumber = prs.data[0]?.number ?? null
+              } catch {
+                prNumber = null
+              }
+
+              const label = prNumber ? `#${prNumber}` : sha.slice(0, 7)
+              const entry = prNumber
+                ? `- ${title.replace(/^\w+(\(.+\))?:\s*/i, '')} ([${label}](${context.payload.repository.html_url}/pull/${prNumber}))`
+                : `- ${title.replace(/^\w+(\(.+\))?:\s*/i, '')} (${label})`
+
+              sections.get(section).push(entry)
+            }
+
+            const lines = [
+              `## Yapa ${currentTag}`,
+              '',
+              `Compare changes since ${previousTag || 'the beginning of the repo'}.`,
+              '',
+            ]
+
+            for (const [section, entries] of sections) {
+              if (entries.length === 0) continue
+              lines.push(`### ${section}`)
+              lines.push(...entries)
+              lines.push('')
+            }
+
+            const body = lines.join('\n').trim() + '\n'
+            fs.writeFileSync('dist/release-notes.md', body)
+            core.setOutput('body_path', 'dist/release-notes.md')
+
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.release_tag.outputs.tag }}
           name: Yapa ${{ steps.release_tag.outputs.tag }}
-          generate_release_notes: true
+          body_path: dist/release-notes.md
           files: dist/Yapa-${{ steps.release_tag.outputs.version }}.dmg
