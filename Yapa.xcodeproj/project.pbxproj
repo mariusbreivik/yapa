@@ -14,8 +14,10 @@
 		29914D1D2F8D57EA00E27951 /* SidebarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29914D1C2F8D57EA00E27951 /* SidebarViewTests.swift */; };
 		29914D232F8D8EE200E27951 /* Meeting Note.md in Resources */ = {isa = PBXBuildFile; fileRef = 29914D1F2F8D8EDA00E27951 /* Meeting Note.md */; };
 		29914D242F8D8EE300E27951 /* Daily Standup.md in Resources */ = {isa = PBXBuildFile; fileRef = 29914D202F8D8EDC00E27951 /* Daily Standup.md */; };
+		29914D242F92228600E27951 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29914D232F92228600E27951 /* AppVersion.swift */; };
 		29914D252F8D8EE400E27951 /* Quick Note.md in Resources */ = {isa = PBXBuildFile; fileRef = 29914D212F8D8EDE00E27951 /* Quick Note.md */; };
 		29914D262F8D8EE500E27951 /* Weekly Review.md in Resources */ = {isa = PBXBuildFile; fileRef = 29914D222F8D8EE100E27951 /* Weekly Review.md */; };
+		29914D262F92228600E27951 /* AppVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29914D252F92228600E27951 /* AppVersionTests.swift */; };
 		59BBD69D11EC6CBB47B3A84E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E09C0564075B89A975BB7796 /* Assets.xcassets */; };
 		5DA9FCB6762F09CFED9F6379 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = B969CB7510EA2516EB29CDCC /* SQLite */; };
 		67F91C71BD8A01D49FD38F28 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD7019DF752FBFC03ADBDB0 /* SearchResultsView.swift */; };
@@ -52,6 +54,8 @@
 		29914D202F8D8EDC00E27951 /* Daily Standup.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "Daily Standup.md"; sourceTree = "<group>"; };
 		29914D212F8D8EDE00E27951 /* Quick Note.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "Quick Note.md"; sourceTree = "<group>"; };
 		29914D222F8D8EE100E27951 /* Weekly Review.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "Weekly Review.md"; sourceTree = "<group>"; };
+		29914D232F92228600E27951 /* AppVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
+		29914D252F92228600E27951 /* AppVersionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersionTests.swift; sourceTree = "<group>"; };
 		2C8E1DEE90C7C46DE4EB405C /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		4BF08EC4CAC7EC1EA72E7FA1 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		5EFEE10C9CD6A6B0ED8DB2AC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -163,6 +167,7 @@
 			isa = PBXGroup;
 			children = (
 				2C8E1DEE90C7C46DE4EB405C /* Note.swift */,
+				29914D232F92228600E27951 /* AppVersion.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -186,6 +191,7 @@
 				DDEE11223344556677889900 /* SearchServiceTests.swift */,
 				29914D1A2F8C232F00E27951 /* FileSystemServiceTests.swift */,
 				29914D1C2F8D57EA00E27951 /* SidebarViewTests.swift */,
+				29914D252F92228600E27951 /* AppVersionTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -302,6 +308,7 @@
 				B1B1B1B1B1B1B1B1B1B1B1B1 /* SearchQuerySanitizer.swift in Sources */,
 				DF8053CB52EE797E624F6AF9 /* Note.swift in Sources */,
 				F2A92524EA7DB2FE331B9342 /* NoteListView.swift in Sources */,
+				29914D242F92228600E27951 /* AppVersion.swift in Sources */,
 				67F91C71BD8A01D49FD38F28 /* SearchResultsView.swift in Sources */,
 				E316B795982C407D17EACEFC /* SearchService.swift in Sources */,
 				973A43EBA26749AE57C46DE4 /* SidebarView.swift in Sources */,
@@ -316,6 +323,7 @@
 			files = (
 				CCDD11223344556677889900 /* SearchServiceTests.swift in Sources */,
 				29914D1D2F8D57EA00E27951 /* SidebarViewTests.swift in Sources */,
+				29914D262F92228600E27951 /* AppVersionTests.swift in Sources */,
 				29914D192F8BEBC500E27951 /* SearchQuerySanitizer.swift in Sources */,
 				29914D1B2F8C232F00E27951 /* FileSystemServiceTests.swift in Sources */,
 			);
@@ -335,13 +343,13 @@
 		3E5B4F5B0EC00B58E2210513 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = Yapa/Resources/YapaDebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -358,13 +366,13 @@
 		9E89E8BCDC8DF85764E0A760 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = Yapa/Resources/Yapa.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -381,6 +389,7 @@
 		B6BDF9332732D59DECAE5713 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -402,7 +411,6 @@
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -420,6 +428,7 @@
 		CBB932D356AD35D71E0503D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -442,7 +451,6 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;

@@ -1,0 +1,79 @@
+name: Tag on Merge
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  tag:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compute next semver tag
+        id: semver
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { execSync } = require('node:child_process')
+
+            const latestTag = execSync('git tag --sort=-v:refname | head -n 1', { encoding: 'utf8' }).trim()
+            const current = latestTag.startsWith('v') ? latestTag.slice(1) : '0.0.0'
+            const [major, minor, patch] = current.split('.').map((part) => Number.parseInt(part, 10) || 0)
+
+            const commitSha = context.sha
+            const prs = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              commit_sha: commitSha,
+            })
+
+            let title = prs.data[0]?.title
+            if (!title) {
+              const commit = await github.rest.repos.getCommit({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: commitSha,
+              })
+              title = commit.data.commit.message.split('\n')[0]
+            }
+
+            const normalized = title.trim()
+            const isBreaking = /(^|\s)(BREAKING CHANGE:|.+!:)/.test(normalized)
+            const isMinor = /^feat(\(.+\))?:/.test(normalized)
+            const isPatch = /^fix(\(.+\))?:/.test(normalized)
+
+            let next
+            if (isBreaking) {
+              next = `${major + 1}.0.0`
+            } else if (isMinor) {
+              next = `${major}.${minor + 1}.0`
+            } else if (isPatch) {
+              next = `${major}.${minor}.${patch + 1}`
+            } else {
+              next = `${major}.${minor}.${patch + 1}`
+            }
+
+            core.setOutput('tag', `v${next}`)
+            core.info(`Latest tag: ${latestTag || 'none'}`)
+            core.info(`Commit/PR title: ${normalized}`)
+            core.info(`Next tag: v${next}`)
+
+      - name: Create tag
+        run: |
+          TAG='${{ steps.semver.outputs.tag }}'
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            echo "Tag already exists: $TAG"
+            exit 0
+          fi
+          git tag -a "$TAG" -m "$TAG"
+          git push origin "$TAG"

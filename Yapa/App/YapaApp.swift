@@ -94,25 +94,34 @@ struct YapaApp: App {
 
 private struct YapaHelpView: View {
     var body: some View {
-        VStack(spacing: 0) {
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Yapa Help")
-                        .font(.title2.weight(.semibold))
+            VStack(spacing: 0) {
+                HStack {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Yapa Help")
+                            .font(.title2.weight(.semibold))
                     Text("Features, shortcuts, and how the app is organized.")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
 
                 Spacer()
-            }
-            .padding(.horizontal, 18)
-            .padding(.vertical, 14)
-            .background(Color(nsColor: .controlBackgroundColor))
+                }
+                .padding(.horizontal, 18)
+                .padding(.vertical, 14)
+                .background(Color(nsColor: .controlBackgroundColor))
 
-            MarkdownPreviewView(content: yapaHelpMarkdown)
-                .background(Color(nsColor: .textBackgroundColor))
-        }
+                HStack {
+                    Spacer()
+                    Text(AppVersionInfo.current.displayString)
+                        .font(.caption2)
+                        .foregroundColor(.secondary)
+                }
+                .padding(.horizontal, 18)
+                .padding(.top, 8)
+
+                MarkdownPreviewView(content: yapaHelpMarkdown)
+                    .background(Color(nsColor: .textBackgroundColor))
+            }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(nsColor: .windowBackgroundColor))
     }

@@ -482,6 +482,12 @@ struct LaunchScreenView: View {
                     .background(RoundedRectangle(cornerRadius: 10).fill(Color.secondary.opacity(0.06)))
                 }
             }
+
+            Text(AppVersionInfo.current.displayString)
+                .font(.caption2)
+                .foregroundColor(.secondary)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .padding(.top, 2)
         }
     }
 

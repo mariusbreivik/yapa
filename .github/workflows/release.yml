@@ -3,8 +3,8 @@ name: Release
 on:
   workflow_dispatch:
     inputs:
-      version:
-        description: Release version, for example 1.0.1
+      tag:
+        description: Release tag, for example v1.0.1
         required: true
         type: string
       build_number:
@@ -30,13 +30,18 @@ jobs:
 
       - name: Build DMG
         env:
-          MARKETING_VERSION: ${{ inputs.version }}
-          CURRENT_PROJECT_VERSION: ${{ inputs.build_number }}
-        run: bash Scripts/build-unsigned-dmg.sh
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          VERSION="${RELEASE_TAG#v}"
+          BUILD_NUMBER="${{ inputs.build_number }}"
+          if [ -z "$BUILD_NUMBER" ]; then
+            BUILD_NUMBER="${{ github.run_number }}"
+          fi
+          MARKETING_VERSION="$VERSION" CURRENT_PROJECT_VERSION="$BUILD_NUMBER" bash Scripts/build-unsigned-dmg.sh
 
       - name: Rename DMG
         run: |
-          VERSION="${{ inputs.version }}"
+          VERSION="${{ inputs.tag }}"
           SOURCE="dist/Yapa-${VERSION}-unsigned.dmg"
           TARGET="dist/Yapa-${VERSION}.dmg"
           if [ -f "$SOURCE" ]; then
@@ -49,7 +54,7 @@ jobs:
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ inputs.version }}
-          name: Yapa v${{ inputs.version }}
+          tag_name: ${{ inputs.tag }}
+          name: Yapa ${{ inputs.tag }}
           generate_release_notes: true
-          files: dist/Yapa-${{ inputs.version }}.dmg
+          files: dist/Yapa-${{ inputs.tag }}.dmg
