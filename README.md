@@ -53,6 +53,7 @@ xcodebuild test -project Yapa.xcodeproj -scheme Yapa -configuration Debug -only-
 - `CI` runs on `pull_request` and pushes to `main`, then builds and tests the app before merge.
 - `Tag on Merge` creates the next semantic version tag automatically when a PR merges to `main`.
 - `Release` is triggered manually, checks out `main`, discovers the latest tag on `main`, and creates an unsigned versioned `.dmg` for distribution as a GitHub Release asset.
+- `Notify Slack on Release` runs after the `Release` workflow completes successfully and posts release details to Slack.
 - The release workflow accepts an optional `build_number` input.
 - Conventional Commit-style PR titles drive semver bumps: `feat:` for minor, `fix:` for patch, and `feat!:` or `BREAKING CHANGE:` for major.
 
@@ -93,6 +94,7 @@ Recommended branch protection for `main`:
 
 - Create Markdown notes with YAML frontmatter
 - Edit note title and body
+- Add and remove note tags from the bottom note metadata section
 - Auto-focus the title field for new notes
 - Auto-save while typing
 - Toggle pin state for notes
@@ -106,6 +108,7 @@ Recommended branch protection for `main`:
 ### Search and Navigation
 
 - Fuzzy search across all notes
+- Tag-aware filtering with `tag:foo` search syntax
 - SQLite FTS5-backed full-text search index
 - Fuzzy fallback when FTS returns no results or errors
 - Search result ranking with SQLite `bm25`
@@ -115,7 +118,7 @@ Recommended branch protection for `main`:
 
 ### Metrics and Metadata
 
-- YAML frontmatter fields: `title`, `created`, `modified`, `pinned`, `lastAccessed`
+- YAML frontmatter fields: `title`, `created`, `modified`, `pinned`, `lastAccessed`, `tags`
 - Editor stats: words, characters, lines, reading time, unique words, sentences, average words per sentence, headings, links, code blocks, last opened, and note size
 - Launch screen metrics for the current workspace
 
