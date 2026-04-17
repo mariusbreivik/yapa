@@ -56,6 +56,7 @@ struct SidebarView: View {
     @State private var editingNoteTitle = ""
     @State private var editingNoteOriginalTitle = ""
     @State private var isProjectsDropTargeted = false
+    @State private var selectedTagFilters: Set<String> = []
     
     var body: some View {
         VStack(spacing: 0) {
@@ -126,6 +127,8 @@ struct SidebarView: View {
                     statPill(value: "\(fileSystemService.pinnedNotes.count)", symbol: "pin.fill", tooltip: "Notes pinned for quick access")
                     statPill(value: "\(fileSystemService.recentNotes.count)", symbol: "clock", tooltip: "Most recently opened notes")
                 }
+
+                tagFilterMenu
             }
             
             Spacer()
@@ -162,7 +165,7 @@ struct SidebarView: View {
         VStack(alignment: .leading, spacing: 2) {
             sidebarSectionHeader(title: "Recent", symbol: "clock.fill")
 
-            ForEach(fileSystemService.recentNotes) { note in
+            ForEach(filteredNotes(fileSystemService.recentNotes)) { note in
                 RecentNoteRow(
                     note: note,
                     isSelected: false,
@@ -181,7 +184,7 @@ struct SidebarView: View {
         VStack(alignment: .leading, spacing: 2) {
             sidebarSectionHeader(title: "Projects", symbol: "folder.fill")
 
-            ForEach(fileSystemService.folderStructure) { folder in
+            ForEach(fileSystemService.folderStructure.map { filteredFolder($0) }.filter { !$0.notes.isEmpty || !$0.children.isEmpty }) { folder in
                 FolderRowView(
                     folder: folder,
                     depth: 1,
@@ -251,6 +254,62 @@ struct SidebarView: View {
         .background(Color.secondary.opacity(0.08))
         .clipShape(Capsule())
         .help(tooltip)
+    }
+
+    private var tagFilterMenu: some View {
+        let availableTags = fileSystemService.availableTags()
+        return Group {
+            if !availableTags.isEmpty {
+                Menu {
+                    Button("Clear Tag Filters", action: { selectedTagFilters.removeAll() })
+                    Divider()
+                    ForEach(availableTags, id: \.self) { tag in
+                        Button(action: { toggleTagFilter(tag) }) {
+                            HStack {
+                                Text(tag)
+                                if selectedTagFilters.contains(tag.lowercased()) {
+                                    Spacer()
+                                    Image(systemName: "checkmark")
+                                }
+                            }
+                        }
+                    }
+                } label: {
+                    HStack(spacing: 6) {
+                        Image(systemName: "tag")
+                        Text(selectedTagFilters.isEmpty ? "Tags" : "Tags (\(selectedTagFilters.count))")
+                            .font(.caption)
+                        Image(systemName: "chevron.down")
+                            .font(.caption2)
+                    }
+                    .foregroundColor(.secondary)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(Color.secondary.opacity(0.08))
+                    .clipShape(Capsule())
+                }
+                .menuStyle(.borderlessButton)
+            }
+        }
+    }
+
+    private func toggleTagFilter(_ tag: String) {
+        let normalized = tag.lowercased()
+        if selectedTagFilters.contains(normalized) {
+            selectedTagFilters.remove(normalized)
+        } else {
+            selectedTagFilters.insert(normalized)
+        }
+    }
+
+    private func filteredNotes(_ notes: [Note]) -> [Note] {
+        fileSystemService.notes(filteredByTags: selectedTagFilters, in: notes)
+    }
+
+    private func filteredFolder(_ folder: FolderItem) -> FolderItem {
+        let filteredChildren = folder.children.map(filteredFolder).filter { !$0.notes.isEmpty || !$0.children.isEmpty }
+        let filteredNotes = fileSystemService.notes(filteredByTags: selectedTagFilters, in: folder.notes)
+        return FolderItem(id: folder.id, name: folder.name, url: folder.url, isExpanded: folder.isExpanded, children: filteredChildren, notes: filteredNotes)
     }
 
     private func createNewNote() {

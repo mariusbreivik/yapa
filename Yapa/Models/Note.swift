@@ -10,6 +10,7 @@ public struct Note: Identifiable, Hashable {
     public var isPinned: Bool
     public var pinnedAt: Date?
     public var lastAccessedAt: Date
+    public var tags: [String]
     
     var displayTitle: String {
         title.isEmpty ? "Untitled" : title
@@ -79,7 +80,7 @@ public struct Note: Identifiable, Hashable {
             .filter { !$0.isEmpty }
     }
     
-    public init(id: UUID = UUID(), title: String = "", content: String = "", createdAt: Date = Date(), modifiedAt: Date = Date(), fileURL: URL, isPinned: Bool = false, pinnedAt: Date? = nil, lastAccessedAt: Date = Date()) {
+    public init(id: UUID = UUID(), title: String = "", content: String = "", createdAt: Date = Date(), modifiedAt: Date = Date(), fileURL: URL, isPinned: Bool = false, pinnedAt: Date? = nil, lastAccessedAt: Date = Date(), tags: [String] = []) {
         self.id = id
         self.title = title
         self.content = content
@@ -89,6 +90,7 @@ public struct Note: Identifiable, Hashable {
         self.isPinned = isPinned
         self.pinnedAt = pinnedAt
         self.lastAccessedAt = lastAccessedAt
+        self.tags = tags
     }
     
     public func hash(into hasher: inout Hasher) {
