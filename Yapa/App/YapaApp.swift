@@ -112,9 +112,9 @@ private struct YapaHelpView: View {
 
                 HStack {
                     Spacer()
-                    Text(AppVersionInfo.current.displayString)
+                    Text("Version \(AppVersionInfo.current.displayString)")
                         .font(.caption2)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(Color.orange.opacity(0.9))
                 }
                 .padding(.horizontal, 18)
                 .padding(.top, 8)

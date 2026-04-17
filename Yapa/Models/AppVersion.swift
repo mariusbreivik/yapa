@@ -15,7 +15,7 @@ public struct AppVersionInfo {
     )
 
     var displayString: String {
-        "v\(marketingVersion) (\(buildNumber))"
+        "v\(marketingVersion) (build \(buildNumber))"
     }
 }
 
