@@ -11,11 +11,17 @@ final class SearchService: ObservableObject {
     
     private var db: Connection?
     private let notesTable = VirtualTable("notes_fts")
+    private let tagsTable = Table("tags")
+    private let noteTagsTable = Table("note_tags")
     
     private let id = Expression<String>("id")
     private let title = Expression<String>("title")
     private let content = Expression<String>("content")
     private let fileURL = Expression<String>("fileURL")
+    private let tagID = Expression<Int64>("id")
+    private let tagName = Expression<String>("name")
+    private let noteTagNoteID = Expression<String>("note_id")
+    private let noteTagTagID = Expression<Int64>("tag_id")
     
     private let recentSearchesKey = "recentSearches"
     private let maxRecentSearches = 5
@@ -44,6 +50,15 @@ final class SearchService: ObservableObject {
                     .column(content)
                     .column(fileURL, [.unindexed])
             )))
+            try db?.run(tagsTable.create(ifNotExists: true) { t in
+                t.column(tagID, primaryKey: .autoincrement)
+                t.column(tagName, unique: true)
+            })
+            try db?.run(noteTagsTable.create(ifNotExists: true) { t in
+                t.column(noteTagNoteID)
+                t.column(noteTagTagID)
+                t.unique(noteTagNoteID, noteTagTagID)
+            })
         } catch {
             print("Database setup error: \(error)")
         }
@@ -81,9 +96,27 @@ final class SearchService: ObservableObject {
                     content <- note.content,
                     fileURL <- note.fileURL.path
                 ))
+                try upsertTags(for: note)
             }
         } catch {
             print("Indexing error: \(error)")
+        }
+    }
+
+    private func upsertTags(for note: Note) throws {
+        guard let db = db else { return }
+        try db.run(noteTagsTable.filter(noteTagNoteID == note.id.uuidString).delete())
+        for tag in note.tags {
+            let normalized = tag.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !normalized.isEmpty else { continue }
+            let existing = tagsTable.filter(tagName == normalized)
+            let tagRowID: Int64
+            if let row = try db.pluck(existing) {
+                tagRowID = row[tagID]
+            } else {
+                tagRowID = try db.run(tagsTable.insert(or: .ignore, tagName <- normalized))
+            }
+            try db.run(noteTagsTable.insert(or: .ignore, noteTagNoteID <- note.id.uuidString, noteTagTagID <- tagRowID))
         }
     }
     
@@ -103,7 +136,21 @@ final class SearchService: ObservableObject {
             var results: [SearchResult] = []
             
             do {
-                let fuzzyQuery = buildFuzzyQuery(query)
+                let parsed = parseSearchQuery(query)
+                if parsed.textQuery.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                    results = self.fuzzySearchFallback(query: query)
+                    DispatchQueue.main.async {
+                        self.searchResults = results
+                        self.isSearching = false
+                        let elapsed = DispatchTime.now().uptimeNanoseconds - start.uptimeNanoseconds
+                        self.lastSearchDurationMS = Int(elapsed / 1_000_000)
+                        if !query.isEmpty && !results.isEmpty {
+                            self.saveRecentSearch(query)
+                        }
+                    }
+                    return
+                }
+                let fuzzyQuery = buildFuzzyQuery(parsed.textQuery)
                 
                 let statement = try db.prepare("""
                     SELECT id, title, content, fileURL,
@@ -130,9 +177,14 @@ final class SearchService: ObservableObject {
                             content: contentValue,
                             fileURL: url
                         )
+
+                        let noteTagSet = Set(note.tags.map { $0.lowercased() })
+                        guard parsed.tagFilters.isEmpty || !parsed.tagFilters.isDisjoint(with: noteTagSet) else {
+                            continue
+                        }
                         
-                        let snippet = self.extractAllMatchingLines(from: contentValue, matching: query)
-                        let highlightedLines = snippet.map { self.highlightMatches(in: $0, query: query) }
+                        let snippet = self.extractAllMatchingLines(from: contentValue, matching: parsed.textQuery.isEmpty ? query : parsed.textQuery)
+                        let highlightedLines = snippet.map { self.highlightMatches(in: $0, query: parsed.textQuery.isEmpty ? query : parsed.textQuery) }
                         
                         let result = SearchResult(
                             note: note,
@@ -162,6 +214,24 @@ final class SearchService: ObservableObject {
             }
         }
     }
+
+    private func parseSearchQuery(_ query: String) -> (textQuery: String, tagFilters: Set<String>) {
+        let parts = query.split(whereSeparator: { $0.isWhitespace || $0.isNewline })
+        var textParts: [String] = []
+        var tags = Set<String>()
+
+        for part in parts {
+            let term = String(part)
+            if term.lowercased().hasPrefix("tag:") {
+                let tag = term.dropFirst(4).trimmingCharacters(in: .whitespacesAndNewlines)
+                if !tag.isEmpty { tags.insert(tag.lowercased()) }
+            } else {
+                textParts.append(term)
+            }
+        }
+
+        return (textParts.joined(separator: " "), tags)
+    }
     
     func buildFuzzyQuery(_ query: String) -> String {
         buildFuzzySearchQuery(query)
@@ -169,12 +239,16 @@ final class SearchService: ObservableObject {
     
     private func fuzzySearchFallback(query: String) -> [SearchResult] {
         let allNotes = FileSystemService.shared.allNotes
-        let terms = searchTerms(from: query)
+        let parsed = parseSearchQuery(query)
+        let terms = searchTerms(from: parsed.textQuery)
 
         guard !terms.isEmpty else { return [] }
         
         return allNotes
             .compactMap { note -> SearchResult? in
+                let noteTagSet = Set(note.tags.map { $0.lowercased() })
+                guard parsed.tagFilters.isEmpty || !parsed.tagFilters.isDisjoint(with: noteTagSet) else { return nil }
+
                 let matches = terms.compactMap { term -> Double? in
                     let titleMatch = fuzzyMatch(term: term, in: note.title.lowercased())
                     let contentMatch = fuzzyMatch(term: term, in: note.content.lowercased())
@@ -185,8 +259,8 @@ final class SearchService: ObservableObject {
                 guard matches.count == terms.count else { return nil }
 
                 let score = matches.reduce(0, +) / Double(matches.count)
-                let snippet = extractAllMatchingLines(from: note.content, matching: query)
-                let highlightedLines = snippet.map { highlightMatches(in: $0, query: query) }
+                let snippet = extractAllMatchingLines(from: note.content, matching: parsed.textQuery)
+                let highlightedLines = snippet.map { highlightMatches(in: $0, query: parsed.textQuery) }
                 
                 return SearchResult(
                     note: note,

@@ -23,6 +23,8 @@ struct EditorView: View {
     @State private var showMovePicker = false
     @State private var showTemplatePicker = false
     @State private var findQuery = ""
+    @State private var tagDraft = ""
+    @State private var editedTags: [String]
     @FocusState private var isTitleFocused: Bool
     @FocusState private var isFindFocused: Bool
     
@@ -32,6 +34,7 @@ struct EditorView: View {
         self._showFindBar = showFindBar
         _editedContent = State(initialValue: note.content)
         _editedTitle = State(initialValue: note.title)
+        _editedTags = State(initialValue: note.tags)
     }
     
     var body: some View {
@@ -50,7 +53,10 @@ struct EditorView: View {
             }
             
             if showStats {
-                statsBar
+                VStack(spacing: 0) {
+                    tagsBar
+                    statsBar
+                }
             }
         }
         .background(Color(nsColor: .textBackgroundColor))
@@ -76,6 +82,9 @@ struct EditorView: View {
                     isTitleFocused = true
                 }
             }
+        }
+        .onChange(of: note.tags) { _, tags in
+            editedTags = tags
         }
         .sheet(isPresented: $showMovePicker) {
             MoveNotePickerView(
@@ -246,7 +255,7 @@ struct EditorView: View {
             .opacity(isFocusMode ? 1.0 : 0.9)
             .animation(.easeInOut(duration: 0.3), value: isFocusMode)
     }
-    
+
     private var previewPane: some View {
         VStack(spacing: 0) {
             HStack {
@@ -271,11 +280,19 @@ struct EditorView: View {
     }
     
     private var statsBar: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack {
-                Text("\(note.displayTitle)")
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 6) {
+                Image(systemName: "chart.bar.fill")
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+                    .fixedSize()
+
+                Text("Stats")
                     .font(.caption.weight(.semibold))
                     .foregroundColor(.secondary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.85)
+                    .fixedSize(horizontal: true, vertical: false)
 
                 Spacer()
 
@@ -283,10 +300,14 @@ struct EditorView: View {
                     Text(saveStatus.title)
                         .foregroundColor(saveStatus.color)
                         .font(.caption)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.85)
+                        .fixedSize(horizontal: true, vertical: false)
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
 
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 6), count: 4), spacing: 6) {
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 4), count: 4), spacing: 4) {
                 metricChip("Words", "\(currentNote.wordCount)")
                 metricChip("Chars", "\(currentNote.characterCount)")
                 metricChip("Lines", "\(currentNote.lineCount)")
@@ -302,27 +323,109 @@ struct EditorView: View {
             }
         }
         .padding(.horizontal, 16)
-        .padding(.vertical, 10)
+        .padding(.vertical, 8)
         .background(Color(nsColor: .controlBackgroundColor))
         .overlay(alignment: .top) {
             Divider()
         }
     }
 
+    private var tagsBar: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: 4) {
+                Image(systemName: "tag")
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+                Text("Tags")
+                    .font(.caption2.weight(.semibold))
+                    .foregroundColor(.secondary)
+                    .lineLimit(1)
+                Spacer()
+                Text(editedTags.isEmpty ? "No tags yet" : "\(editedTags.count) tags")
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+            }
+
+            if editedTags.isEmpty {
+                Text("Add tags to classify this note.")
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+            } else {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 2) {
+                        ForEach(editedTags, id: \.self) { tag in
+                            tagChip(tag)
+                        }
+                    }
+                }
+            }
+
+            HStack(spacing: 4) {
+                TextField("Add a tag", text: $tagDraft)
+                    .textFieldStyle(.roundedBorder)
+                    .onSubmit(addTag)
+
+                Button {
+                    addTag()
+                } label: {
+                    Label("Add", systemImage: "plus")
+                }
+                .buttonStyle(.bordered)
+                .disabled(tagDraft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            }
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 6)
+        .background(Color(nsColor: .controlBackgroundColor))
+        .overlay(alignment: .top) {
+            Divider()
+        }
+    }
+
+    private func tagChip(_ tag: String) -> some View {
+        HStack(spacing: 6) {
+            Text(tag)
+                .font(.caption.weight(.medium))
+                .lineLimit(1)
+            Button(action: { removeTag(tag) }) {
+                Image(systemName: "xmark")
+                    .font(.caption2.weight(.semibold))
+            }
+            .buttonStyle(.plain)
+            .foregroundColor(.secondary)
+            .help("Remove tag")
+        }
+        .padding(.horizontal, 9)
+        .padding(.vertical, 5)
+        .background(Color.accentColor.opacity(0.12))
+        .overlay {
+            Capsule(style: .continuous)
+                .stroke(Color.accentColor.opacity(0.18), lineWidth: 1)
+        }
+        .clipShape(Capsule(style: .continuous))
+    }
+
     private func metricChip(_ label: String, _ value: String) -> some View {
-        VStack(alignment: .leading, spacing: 2) {
+        HStack(spacing: 6) {
             Text(label.uppercased())
                 .font(.system(size: 9, weight: .regular, design: .monospaced))
                 .foregroundColor(.secondary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.85)
+                .fixedSize(horizontal: true, vertical: false)
+
+            Spacer(minLength: 0)
+
             Text(value)
                 .font(.system(size: 12, weight: .regular, design: .monospaced))
                 .foregroundColor(Color.orange.opacity(0.9))
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)
+                .fixedSize(horizontal: true, vertical: false)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity, minHeight: 26, alignment: .leading)
         .padding(.horizontal, 10)
-        .padding(.vertical, 6)
+        .padding(.vertical, 5)
         .background(Color.secondary.opacity(0.08))
         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
     }
@@ -352,6 +455,7 @@ struct EditorView: View {
         updatedNote.title = editedTitle
         updatedNote.content = editedContent
         updatedNote.modifiedAt = Date()
+        updatedNote.tags = editedTags
         
         fileSystemService.saveNote(updatedNote)
         hasChanges = false
@@ -367,6 +471,23 @@ struct EditorView: View {
     
     private func deleteNote() {
         fileSystemService.deleteNote(currentNote)
+    }
+
+    private func addTag() {
+        let tag = tagDraft.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !tag.isEmpty else { return }
+        guard !editedTags.contains(where: { $0.caseInsensitiveCompare(tag) == .orderedSame }) else {
+            tagDraft = ""
+            return
+        }
+        editedTags.append(tag)
+        tagDraft = ""
+        saveNote()
+    }
+
+    private func removeTag(_ tag: String) {
+        editedTags.removeAll { $0.caseInsensitiveCompare(tag) == .orderedSame }
+        saveNote()
     }
 
     private var currentNote: Note {
@@ -734,6 +855,50 @@ private struct FormattingControl: Identifiable {
     let label: String
     let format: String
     var id: String { format }
+}
+
+private struct TagWrapLayout<Item: Hashable, TagContent: View>: View {
+    let items: [Item]
+    let content: (Item) -> TagContent
+
+    var body: some View {
+        GeometryReader { proxy in
+            let rows = makeRows(maxWidth: proxy.size.width)
+
+            VStack(alignment: .leading, spacing: 8) {
+                ForEach(rows.indices, id: \.self) { rowIndex in
+                    HStack(spacing: 8) {
+                        ForEach(rows[rowIndex], id: \.self) { item in
+                            content(item)
+                        }
+                    }
+                }
+            }
+        }
+        .frame(minHeight: 1)
+    }
+
+    private func makeRows(maxWidth: CGFloat) -> [[Item]] {
+        var rows: [[Item]] = [[]]
+        var currentWidth: CGFloat = 0
+
+        for item in items {
+            let itemWidth = estimatedWidth(for: item)
+            if currentWidth + itemWidth > maxWidth, !rows[rows.count - 1].isEmpty {
+                rows.append([item])
+                currentWidth = itemWidth + 8
+            } else {
+                rows[rows.count - 1].append(item)
+                currentWidth += itemWidth + 8
+            }
+        }
+
+        return rows
+    }
+
+    private func estimatedWidth(for item: Item) -> CGFloat {
+        max(72, CGFloat(String(describing: item).count) * 8.2 + 44)
+    }
 }
 
 struct TemplatePickerView: View {

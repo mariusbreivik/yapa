@@ -9,6 +9,7 @@ struct NoteMetadata {
     var isPinned: Bool = false
     var pinnedAt: Date?
     var lastAccessed: Date?
+    var tags: [String] = []
 }
 
 public final class FileSystemService: ObservableObject {
@@ -503,7 +504,8 @@ public final class FileSystemService: ObservableObject {
             fileURL: url,
             isPinned: metadata.isPinned,
             pinnedAt: metadata.pinnedAt,
-            lastAccessedAt: metadata.lastAccessed ?? modifiedAt
+            lastAccessedAt: metadata.lastAccessed ?? modifiedAt,
+            tags: metadata.tags
         )
     }
     
@@ -553,12 +555,36 @@ public final class FileSystemService: ObservableObject {
                         metadata.pinnedAt = dateFormatter.date(from: value)
                     } else if key == "lastAccessed" {
                         metadata.lastAccessed = dateFormatter.date(from: value)
+                    } else if key == "tags" {
+                        metadata.tags = parseTags(from: value)
                     }
                 }
             }
         }
         
         return metadata
+    }
+
+    private func parseTags(from value: String) -> [String] {
+        let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return [] }
+
+        if trimmed.hasPrefix("[") && trimmed.hasSuffix("]") {
+            let inner = trimmed.dropFirst().dropLast()
+            return inner
+                .split(separator: ",")
+                .map { token in
+                    token.trimmingCharacters(in: .whitespacesAndNewlines)
+                        .trimmingCharacters(in: CharacterSet(charactersIn: "\""))
+                        .trimmingCharacters(in: CharacterSet(charactersIn: "'"))
+                }
+                .filter { !$0.isEmpty }
+        }
+
+        return trimmed
+            .split(separator: ",")
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
     }
     
     private func extractTitleFromContent(_ content: String) -> String {
@@ -613,12 +639,14 @@ public final class FileSystemService: ObservableObject {
     }
     
     func saveNote(_ note: Note) {
+        let tagsLine = formattedTagsLine(for: note.tags)
         let frontmatter = """
         ---
         title: "\(note.title)"
         created: \(ISO8601DateFormatter().string(from: note.createdAt))
         modified: \(ISO8601DateFormatter().string(from: Date()))
         pinned: \(note.isPinned)
+        \(tagsLine)
         \(note.pinnedAt.map { "pinnedAt: \(ISO8601DateFormatter().string(from: $0))\n" } ?? "")
         lastAccessed: \(ISO8601DateFormatter().string(from: note.lastAccessedAt))
         ---
@@ -635,6 +663,12 @@ public final class FileSystemService: ObservableObject {
         } catch {
             print("Error saving note: \(error)")
         }
+    }
+
+    private func formattedTagsLine(for tags: [String]) -> String {
+        guard !tags.isEmpty else { return "" }
+        let quoted = tags.map { "\"\($0)\"" }.joined(separator: ", ")
+        return "tags: [\(quoted)]\n"
     }
     
     func createNote(in folder: URL, title: String = "Untitled") -> Note? {
@@ -662,6 +696,7 @@ public final class FileSystemService: ObservableObject {
         title: "\(title)"
         created: \(ISO8601DateFormatter().string(from: Date()))
         modified: \(ISO8601DateFormatter().string(from: Date()))
+        tags: []
         ---
         
         # \(title)
@@ -681,6 +716,16 @@ public final class FileSystemService: ObservableObject {
         }
         
         return nil
+    }
+
+    func availableTags() -> [String] {
+        Array(Set(allNotes.flatMap { $0.tags }))
+            .sorted { $0.localizedCaseInsensitiveCompare($1) == .orderedAscending }
+    }
+
+    func notes(filteredByTags tags: Set<String>, in notes: [Note]) -> [Note] {
+        guard !tags.isEmpty else { return notes }
+        return notes.filter { !tags.isDisjoint(with: Set($0.tags)) }
     }
     
     func createFolder(in parent: URL, name: String) -> URL? {
