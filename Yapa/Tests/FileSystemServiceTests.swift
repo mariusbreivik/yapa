@@ -2,6 +2,20 @@ import XCTest
 @testable import Yapa
 
 final class FileSystemServiceTests: XCTestCase {
+    func testCreateTopLevelProjectKeepsEmptyProjectInFolderStructure() throws {
+        let rootURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try FileManager.default.createDirectory(at: rootURL, withIntermediateDirectories: true)
+
+        let service = FileSystemService(fileManager: .default)
+        service.openVaultFolder(at: rootURL)
+
+        let createdURL = try XCTUnwrap(service.createTopLevelProject(named: "Research"))
+
+        XCTAssertTrue(FileManager.default.fileExists(atPath: createdURL.path, isDirectory: nil))
+        XCTAssertEqual(service.folderStructure.map(\.name), ["Research"])
+        XCTAssertEqual(service.folderStructure.first?.url.standardizedFileURL, createdURL.standardizedFileURL)
+    }
+
     func testLoadNoteParsesTagsFromFrontmatter() throws {
         let rootURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
         try FileManager.default.createDirectory(at: rootURL, withIntermediateDirectories: true)

@@ -184,7 +184,7 @@ struct SidebarView: View {
         VStack(alignment: .leading, spacing: 2) {
             sidebarSectionHeader(title: "Projects", symbol: "folder.fill")
 
-            ForEach(fileSystemService.folderStructure.map { filteredFolder($0) }.filter { !$0.notes.isEmpty || !$0.children.isEmpty }) { folder in
+            ForEach(fileSystemService.folderStructure.map { filteredFolder($0) }) { folder in
                 FolderRowView(
                     folder: folder,
                     depth: 1,
