@@ -202,6 +202,7 @@ struct SidebarView: View {
                     onRenameNote: renameNote,
                     onCancelRename: cancelFolderRename,
                     onCancelRenameNote: cancelNoteRename,
+                    onCreateNote: createNote(in:),
                     onDelete: { deleteFolder(folder) },
                     onDropItems: handleDrop
                 )
@@ -318,6 +319,11 @@ struct SidebarView: View {
         if let newNote = fileSystemService.createNote(in: folder) {
             selectedNote = newNote
         }
+    }
+
+    private func createNote(in folder: FolderItem) {
+        selectedFolder = folder
+        selectedNote = fileSystemService.createNote(in: folder.url)
     }
     
     private func createNewFolder() {
@@ -526,6 +532,7 @@ struct FolderRowView: View {
     let onRenameNote: (Note, String) -> Void
     let onCancelRename: () -> Void
     let onCancelRenameNote: () -> Void
+    let onCreateNote: (FolderItem) -> Void
     let onDelete: () -> Void
     let onDropItems: ([SidebarTreeDragPayload], FolderItem) -> Bool
     
@@ -595,9 +602,12 @@ struct FolderRowView: View {
                 isHovering = hovering
             }
             .contextMenu {
+                Button("New Note") { onCreateNote(folder) }
+                    .keyboardShortcut("n", modifiers: [.command])
                 Button("Rename Folder", action: { onBeginRename(folder) })
                     .keyboardShortcut("r", modifiers: [.command, .shift])
                 Button("Delete Folder", role: .destructive, action: onDelete)
+                    .keyboardShortcut(.delete, modifiers: [.command])
             }
             .draggable(SidebarTreeDragPayload.folder(folder.url))
             .dropDestination(for: SidebarTreeDragPayload.self) { items, _ in
@@ -633,6 +643,7 @@ struct FolderRowView: View {
                             onRenameNote: onRenameNote,
                             onCancelRename: onCancelRename,
                             onCancelRenameNote: onCancelRenameNote,
+                            onCreateNote: onCreateNote,
                             onDelete: { fileSystemService.deleteFolder(child.url) },
                             onDropItems: onDropItems
                         )
