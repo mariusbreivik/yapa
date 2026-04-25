@@ -64,6 +64,7 @@ struct SidebarView: View {
 
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 4) {
+                    tasksSection
                     pinnedSection
                     recentSection
                     foldersSection
@@ -301,6 +302,48 @@ struct SidebarView: View {
         }
     }
 
+    private var tasksSection: some View {
+        let tasks = openTasks
+
+        return VStack(alignment: .leading, spacing: 2) {
+            sidebarSectionHeader(title: "Tasks", symbol: "checklist")
+
+            if tasks.isEmpty {
+                Text("No open tasks")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .padding(.vertical, 6)
+                    .padding(.horizontal, 4)
+            } else {
+                ForEach(tasks) { item in
+                    Button(action: { toggleTask(item) }) {
+                        HStack(alignment: .top, spacing: 8) {
+                            Image(systemName: item.task.isCompleted ? "checkmark.circle.fill" : "circle")
+                                .foregroundColor(item.task.isCompleted ? .green : .secondary)
+                                .font(.caption)
+
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(item.task.title)
+                                    .font(.caption)
+                                    .foregroundColor(.primary)
+                                    .lineLimit(2)
+                                Text(item.note.displayTitle)
+                                    .font(.caption2)
+                                    .foregroundColor(.secondary)
+                                    .lineLimit(1)
+                            }
+
+                            Spacer(minLength: 0)
+                        }
+                        .padding(.vertical, 4)
+                        .padding(.horizontal, 4)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+    }
+
     private func toggleTagFilter(_ tag: String) {
         let normalized = tag.lowercased()
         if selectedTagFilters.contains(normalized) {
@@ -312,6 +355,36 @@ struct SidebarView: View {
 
     private func filteredNotes(_ notes: [Note]) -> [Note] {
         fileSystemService.notes(filteredByTags: selectedTagFilters, in: notes)
+    }
+
+    private var openTasks: [NoteTask] {
+        fileSystemService.allNotes
+            .flatMap { note in
+                note.taskItems
+                    .filter { !$0.isCompleted }
+                    .map { NoteTask(note: note, task: $0) }
+            }
+    }
+
+    private func toggleTask(_ item: NoteTask) {
+        var lines = item.note.content.components(separatedBy: .newlines)
+        guard item.task.lineIndex < lines.count else { return }
+
+        let line = lines[item.task.lineIndex].trimmingCharacters(in: .whitespaces)
+        if line.hasPrefix("- [x]") || line.hasPrefix("- [X]") {
+            lines[item.task.lineIndex] = line.replacingOccurrences(of: "- [x]", with: "- [ ]", options: .caseInsensitive)
+        } else if line.hasPrefix("- [ ]") {
+            lines[item.task.lineIndex] = line.replacingOccurrences(of: "- [ ]", with: "- [x]", options: .literal)
+        }
+
+        var updatedNote = item.note
+        updatedNote.content = lines.joined(separator: "\n")
+        updatedNote.modifiedAt = Date()
+        fileSystemService.saveNote(updatedNote)
+
+        if selectedNote?.fileURL.standardizedFileURL == updatedNote.fileURL.standardizedFileURL {
+            selectedNote = updatedNote
+        }
     }
 
     private func filteredFolder(_ folder: FolderItem) -> FolderItem {
@@ -521,6 +594,12 @@ struct SidebarView: View {
         expandedFolders.insert(url.standardizedFileURL)
     }
 
+}
+
+private struct NoteTask: Identifiable {
+    let note: Note
+    let task: TaskItem
+    var id: String { "\(note.fileURL.standardizedFileURL.path)#\(task.lineIndex)" }
 }
 
 struct FolderRowView: View {

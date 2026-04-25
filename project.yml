@@ -33,6 +33,7 @@ targets:
         SWIFT_VERSION: "5.9"
         MACOSX_DEPLOYMENT_TARGET: "14.0"
         CODE_SIGN_STYLE: Automatic
+        CODE_SIGNING_ALLOWED: YES
         ENABLE_HARDENED_RUNTIME: YES
         COMBINE_HIDPI_IMAGES: YES
         ALWAYS_SEARCH_USER_PATHS: NO
@@ -45,3 +46,25 @@ targets:
       - package: Down
       - package: SQLite
         product: SQLite
+
+  YapaTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - Yapa/Tests
+    dependencies:
+      - target: Yapa
+      - package: Down
+      - package: SQLite
+        product: SQLite
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.yapa.app.tests
+        PRODUCT_NAME: YapaTests
+        GENERATE_INFOPLIST_FILE: true
+        SWIFT_VERSION: "5.9"
+        MACOSX_DEPLOYMENT_TARGET: "14.0"
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Yapa.app/Contents/MacOS/Yapa"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+        LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks"
+        CODE_SIGNING_ALLOWED: NO

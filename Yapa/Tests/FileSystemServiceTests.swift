@@ -5,6 +5,7 @@ final class FileSystemServiceTests: XCTestCase {
     func testCreateTopLevelProjectKeepsEmptyProjectInFolderStructure() throws {
         let rootURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
         try FileManager.default.createDirectory(at: rootURL, withIntermediateDirectories: true)
+        try "placeholder".write(to: rootURL.appendingPathComponent("keep.md"), atomically: true, encoding: .utf8)
 
         let service = FileSystemService(fileManager: .default)
         service.openVaultFolder(at: rootURL)
@@ -39,6 +40,42 @@ final class FileSystemServiceTests: XCTestCase {
         XCTAssertEqual(note.tags, ["work", "ideas", "deep focus"])
     }
 
+    func testLoadNoteCountsChecklistItemsFromBody() throws {
+        let rootURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try FileManager.default.createDirectory(at: rootURL, withIntermediateDirectories: true)
+
+        let noteURL = rootURL.appendingPathComponent("tasks.md")
+        let content = """
+        ---
+        title: "Tasks"
+        created: 2026-04-12T10:00:00Z
+        modified: 2026-04-12T10:01:00Z
+        ---
+
+        - [ ] Write issue summary
+        - [x] Add checklist stats
+        - [X] Verify persistence
+        - Regular bullet
+        """
+        try content.write(to: noteURL, atomically: true, encoding: .utf8)
+
+        let service = FileSystemService(fileManager: .default)
+        let note = try XCTUnwrap(service.loadNote(from: noteURL))
+
+        XCTAssertEqual(note.checklistCount, 3)
+        XCTAssertEqual(note.taskItems.map(\.title), ["Write issue summary", "Add checklist stats", "Verify persistence"])
+        XCTAssertEqual(note.taskItems.map(\.isCompleted), [false, true, true])
+    }
+
+    func testHasOpenTasksFiltersNotesWithIncompleteChecklists() throws {
+        let noteURL = URL(fileURLWithPath: "/tmp/task-filter.md")
+        let openNote = Note(content: "- [ ] Open item", fileURL: noteURL)
+        let closedNote = Note(content: "- [x] Closed item", fileURL: noteURL)
+
+        XCTAssertTrue(hasOpenTasks(openNote))
+        XCTAssertFalse(hasOpenTasks(closedNote))
+    }
+
     func testSaveNotePersistsTagsToFrontmatter() throws {
         let rootURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
         try FileManager.default.createDirectory(at: rootURL, withIntermediateDirectories: true)
@@ -58,6 +95,27 @@ final class FileSystemServiceTests: XCTestCase {
 
         let savedContent = try String(contentsOf: noteURL, encoding: .utf8)
         XCTAssertTrue(savedContent.contains("tags: [\"work\", \"ideas\"]"))
+    }
+
+    func testSaveNotePreservesChecklistBodyContent() throws {
+        let rootURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try FileManager.default.createDirectory(at: rootURL, withIntermediateDirectories: true)
+
+        let noteURL = rootURL.appendingPathComponent("checklist.md")
+        let note = Note(
+            title: "Checklist",
+            content: "- [ ] First task\n- [x] Second task",
+            createdAt: Date(timeIntervalSince1970: 1000),
+            modifiedAt: Date(timeIntervalSince1970: 2000),
+            fileURL: noteURL
+        )
+
+        let service = FileSystemService(fileManager: .default)
+        service.saveNote(note)
+
+        let savedContent = try String(contentsOf: noteURL, encoding: .utf8)
+        XCTAssertTrue(savedContent.contains("- [ ] First task"))
+        XCTAssertTrue(savedContent.contains("- [x] Second task"))
     }
 
     func testMoveNoteUpdatesFolderStructureAndRootNotes() throws {

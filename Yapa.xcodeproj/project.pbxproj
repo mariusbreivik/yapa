@@ -349,6 +349,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = Yapa/Resources/YapaDebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGNING_ALLOWED = NO;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
@@ -468,14 +469,18 @@
 		FF5011223344556677889900 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGNING_ALLOWED = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yapa.app.tests;
 				PRODUCT_NAME = YapaTests;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Yapa.app/Contents/MacOS/Yapa";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.9;
 			};
@@ -484,14 +489,17 @@
 		FF5111223344556677889900 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yapa.app.tests;
 				PRODUCT_NAME = YapaTests;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Yapa.app/Contents/MacOS/Yapa";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.9;
 			};

@@ -67,6 +67,15 @@ public struct Note: Identifiable, Hashable {
         }.count
     }
 
+    var taskItems: [TaskItem] {
+        content
+            .components(separatedBy: .newlines)
+            .enumerated()
+            .compactMap { index, line in
+                TaskItem(lineIndex: index, line: line)
+            }
+    }
+
     var averageWordsPerSentence: Double {
         guard sentenceCount > 0 else { return Double(wordCount) }
         return Double(wordCount) / Double(sentenceCount)
@@ -99,6 +108,32 @@ public struct Note: Identifiable, Hashable {
     
     public static func == (lhs: Note, rhs: Note) -> Bool {
         lhs.id == rhs.id
+    }
+}
+
+struct TaskItem: Identifiable, Hashable {
+    let id = UUID()
+    let lineIndex: Int
+    let line: String
+
+    var isCompleted: Bool {
+        normalizedLine.hasPrefix("- [x]") || normalizedLine.hasPrefix("- [X]")
+    }
+
+    var title: String {
+        guard normalizedLine.count >= 5 else { return normalizedLine }
+        return String(normalizedLine.dropFirst(6)).trimmingCharacters(in: .whitespaces)
+    }
+
+    private var normalizedLine: String {
+        line.trimmingCharacters(in: .whitespaces)
+    }
+
+    init?(lineIndex: Int, line: String) {
+        let trimmed = line.trimmingCharacters(in: .whitespaces)
+        guard trimmed.hasPrefix("- [ ]") || trimmed.hasPrefix("- [x]") || trimmed.hasPrefix("- [X]") else { return nil }
+        self.lineIndex = lineIndex
+        self.line = line
     }
 }
 
