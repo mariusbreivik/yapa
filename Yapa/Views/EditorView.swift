@@ -318,7 +318,7 @@ struct EditorView: View {
                 metricChip("Headings", "\(currentNote.headingCount)")
                 metricChip("Links", "\(currentNote.linkCount)")
                 metricChip("Code", "\(currentNote.codeBlockCount)")
-                metricChip("Opened", relative(date: currentNote.lastAccessedAt))
+                metricChip("Tasks", "\(currentNote.checklistCount)")
                 metricChip("Size", String(format: "%.1f KB", Double(currentNote.characterCount) / 1024.0))
             }
         }
@@ -430,12 +430,6 @@ struct EditorView: View {
         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
     }
 
-    private func relative(date: Date) -> String {
-        let formatter = RelativeDateTimeFormatter()
-        formatter.unitsStyle = .abbreviated
-        return formatter.localizedString(for: date, relativeTo: Date())
-    }
-    
     private func markAsChanged() {
         hasChanges = true
         saveStatusClearTimer?.invalidate()

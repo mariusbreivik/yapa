@@ -8,6 +8,7 @@ struct NoteListView: View {
     
     @State private var sortOrder: SortOrder = .modified
     @State private var showSortMenu = false
+    @State private var showOpenTasksOnly = false
     
     enum SortOrder: String, CaseIterable {
         case modified = "Modified"
@@ -32,13 +33,15 @@ struct NoteListView: View {
             notes = fileSystemService.allNotes
         }
         
+        let filteredNotes = showOpenTasksOnly ? notes.filter(hasOpenTasks) : notes
+
         switch sortOrder {
         case .modified:
-            return notes.sorted { $0.modifiedAt > $1.modifiedAt }
+            return filteredNotes.sorted { $0.modifiedAt > $1.modifiedAt }
         case .created:
-            return notes.sorted { $0.createdAt > $1.createdAt }
+            return filteredNotes.sorted { $0.createdAt > $1.createdAt }
         case .title:
-            return notes.sorted { $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending }
+            return filteredNotes.sorted { $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending }
         }
     }
     
@@ -104,6 +107,24 @@ struct NoteListView: View {
                 .clipShape(Capsule())
             }
             .menuStyle(.borderlessButton)
+
+            Button(action: { showOpenTasksOnly.toggle() }) {
+                HStack(spacing: 6) {
+                    Image(systemName: "checklist")
+                    Text("Tasks")
+                        .font(.caption)
+                    if showOpenTasksOnly {
+                        Image(systemName: "checkmark")
+                            .font(.caption2)
+                    }
+                }
+                .foregroundColor(showOpenTasksOnly ? .accentColor : .secondary)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(Color.secondary.opacity(showOpenTasksOnly ? 0.12 : 0.08))
+                .clipShape(Capsule())
+            }
+            .buttonStyle(.plain)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
@@ -190,6 +211,11 @@ struct NoteListView: View {
             }
         }
     }
+}
+
+func hasOpenTasks(_ note: Note) -> Bool {
+    let tasks = note.taskItems
+    return !tasks.isEmpty && tasks.contains(where: { !$0.isCompleted })
 }
 
 struct NoteRowView: View {
