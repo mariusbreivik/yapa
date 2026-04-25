@@ -66,13 +66,12 @@ xcodebuild test -project Yapa.xcodeproj -scheme Yapa -configuration Debug -only-
 ## GitHub Actions
 
 - `CI` runs on `pull_request` and pushes to `main`, then builds and tests the app before merge.
-- `Tag on Merge` creates the next semantic version tag automatically when a PR merges to `main`.
-- `Release` is triggered manually, checks out `main`, discovers the latest tag on `main`, and creates an unsigned versioned `.dmg` for distribution as a GitHub Release asset.
+- `Release` is triggered manually, checks out `main`, creates the next semantic version tag, and produces an unsigned versioned `.dmg` for distribution as a GitHub Release asset.
 - `Notify Slack on Release` runs after the `Release` workflow completes successfully and posts release details to Slack.
 - The release workflow accepts an optional `build_number` input.
 - Conventional Commit-style PR titles drive semver bumps: `feat:` for minor, `fix:` for patch, and `feat!:` or `BREAKING CHANGE:` for major.
 - `Notify Slack on Release` requires a configured `SLACK_BOT_TOKEN` secret.
-- Release notes are generated from merged commits and linked PRs between the latest tag and `HEAD`.
+- Release notes are generated from merged commits and linked PRs between the previous release tag and the new release tag.
 
 ## Versioning
 

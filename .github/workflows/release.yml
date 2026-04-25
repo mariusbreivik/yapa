@@ -28,27 +28,47 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Resolve latest release tag
+      - name: Compute next release tag
         id: release_tag
         run: |
-          TAG=$(git tag --merged origin/main --sort=-v:refname | grep '^v' | head -n 1)
-          if [ -z "$TAG" ]; then
-            echo "No release tag found on main" >&2
+          latestTag=$(git tag --sort=-v:refname | grep '^v' | head -n 1)
+          if [ -z "$latestTag" ]; then
+            echo "No existing release tag found" >&2
             exit 1
           fi
-          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
-          echo "version=${TAG#v}" >> "$GITHUB_OUTPUT"
 
-      - name: Resolve previous release tag
-        id: previous_release_tag
-        run: |
-          CURRENT_TAG="${{ steps.release_tag.outputs.tag }}"
-          TAG=$(git tag --sort=-v:refname | grep '^v' | grep -v "^${CURRENT_TAG}$" | head -n 1)
-          if [ -z "$TAG" ]; then
-            echo "tag=" >> "$GITHUB_OUTPUT"
+          current=${latestTag#v}
+          major=${current%%.*}
+          rest=${current#*.}
+          minor=${rest%%.*}
+          patch=${current##*.}
+
+          commit_title=$(git log -1 --format=%s origin/main)
+          normalized=$(printf '%s' "$commit_title" | tr -d '\r')
+
+          if printf '%s' "$normalized" | grep -Eq '(^|[[:space:]])(BREAKING CHANGE:|.+!:)' ; then
+            next="$((major + 1)).0.0"
+          elif printf '%s' "$normalized" | grep -Eq '^feat(\(.+\))?:' ; then
+            next="$major.$((minor + 1)).0"
+          elif printf '%s' "$normalized" | grep -Eq '^fix(\(.+\))?:' ; then
+            next="$major.$minor.$((patch + 1))"
           else
-            echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+            next="$major.$minor.$((patch + 1))"
           fi
+
+          echo "previous_tag=$latestTag" >> "$GITHUB_OUTPUT"
+          echo "tag=v$next" >> "$GITHUB_OUTPUT"
+          echo "version=$next" >> "$GITHUB_OUTPUT"
+
+      - name: Create release tag
+        run: |
+          TAG='${{ steps.release_tag.outputs.tag }}'
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            echo "Tag already exists: $TAG"
+            exit 0
+          fi
+          git tag -a "$TAG" -m "$TAG"
+          git push origin "$TAG"
 
       - name: Build DMG
         run: |
@@ -79,7 +99,7 @@ jobs:
         with:
           owner: ${{ github.repository_owner }}
           repo: ${{ github.event.repository.name }}
-          fromTag: ${{ steps.previous_release_tag.outputs.tag }}
+          fromTag: ${{ steps.release_tag.outputs.previous_tag }}
           toTag: ${{ steps.release_tag.outputs.tag }}
           configuration: .github/release-changelog-builder.config.json
 
