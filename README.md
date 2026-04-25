@@ -1,44 +1,54 @@
-# Yapa
+# Yapa ✨
 
-Yapa is a native macOS Markdown note app built with SwiftUI. Notes live as plain `.md` files inside a user-selected folder, with YAML frontmatter for metadata.
+Yapa is a local-first macOS Markdown notes app built with SwiftUI. Notes stay as plain `.md` files inside a user-selected folder, with YAML frontmatter for metadata.
 
-## Highlights
+## Highlights 🌟
 
-- Local-first note storage in the filesystem
-- User-selected Yapa root folder with security-scoped bookmarks
-- Top-level project folders with nested organization
-- Autosave while typing, with note status feedback in the editor
-- Markdown preview, formatting tools, templates, and focus mode
-- Sidebar pinned/recent sections plus drag and drop for notes and folders
-- SQLite FTS5 search with fuzzy fallback matching
-- Quick Open, fuzzy search, and in-document find
-- Launch screen with recent vault selection and workspace metrics
+- 🗂️ Local note storage in the filesystem
+- 🔐 User-selected Yapa root folder with security-scoped bookmarks
+- 🧩 Top-level project folders with nested organization
+- 💾 Autosave while typing, with editor status feedback
+- 📝 Markdown preview, formatting tools, templates, and focus mode
+- 📌 Sidebar pinned/recent sections plus drag and drop for notes and folders
+- 🔎 SQLite FTS5 search with fuzzy fallback matching
+- 🚀 Quick Open, fuzzy search, and in-document find
+- 📊 Launch screen with recent vault selection and workspace metrics
 
-## Requirements
+## Requirements 🛠️
 
 - macOS 14.0+
 - Xcode 15+
 
-## Getting Started
+## Getting Started 🚪
 
-Open `Yapa.xcodeproj` in Xcode, then choose a folder for your Yapa root when the app launches.
+1. Open `Yapa.xcodeproj` in Xcode.
+2. Launch the app and choose a Yapa folder when prompted.
+3. Use the built-in templates or create new notes/projects from the toolbar.
 
 `project.yml` is the source of truth for target, dependency, and scheme changes.
 
-## Development
+## Configuration ⚙️
+
+- `project.yml` defines the app target, test target, deployment target, Swift version, and package dependencies.
+- The app depends on `Down` for Markdown rendering and `SQLite.swift` for search indexing.
+- `Templates/` contains the built-in note templates shipped in the app bundle.
+- `Yapa/Resources/` contains app icon, Info.plist, and entitlements files.
+- Release builds use the version metadata stamped into the bundle.
+
+## Development 🧪
 
 - Open `Yapa.xcodeproj` in Xcode and work from the `Yapa` scheme
 - Build from the command line with `xcodebuild -project Yapa.xcodeproj -scheme Yapa -configuration Debug build`
 - Run the full test suite with `xcodebuild test -project Yapa.xcodeproj -scheme Yapa -configuration Debug`
 - Check Xcode's Issue Navigator before shipping changes, especially after editing search, file system, or release code
 
-## Build
+## Build 🚧
 
 ```bash
 xcodebuild -project Yapa.xcodeproj -scheme Yapa -configuration Debug build
 ```
 
-## Test
+## Test ✅
 
 ```bash
 xcodebuild test -project Yapa.xcodeproj -scheme Yapa -configuration Debug
@@ -50,20 +60,20 @@ Single test example:
 xcodebuild test -project Yapa.xcodeproj -scheme Yapa -configuration Debug -only-testing:YapaTests/SearchServiceTests/testBuildFuzzyQueryStripsUnsupportedCharacters
 ```
 
-## Scripts
+## Scripts 🧰
 
 - `swift Scripts/GenerateAppIcon.swift` regenerates the app icon set in `Yapa/Resources/Assets.xcassets/AppIcon.appiconset`
 - `bash Scripts/build-unsigned-dmg.sh` builds a release app and writes `dist/Yapa-<version>-unsigned.dmg`
 - `Scripts/build-unsigned-dmg.sh` accepts optional `MARKETING_VERSION` and `CURRENT_PROJECT_VERSION` environment variables
 - The DMG script requires a macOS build machine with `xcodebuild`, `ditto`, and `hdiutil`
 
-## Templates
+## Templates 🧾
 
 - Built-in note templates live in `Templates/`
 - The shipped templates are `Quick Note.md`, `Daily Standup.md`, `Meeting Note.md`, and `Weekly Review.md`
 - Add new templates by placing additional `.md` files in that folder
 
-## GitHub Actions
+## GitHub Actions 🚀
 
 - `CI` runs on `pull_request` and pushes to `main`, then builds and tests the app before merge.
 - `Release` is triggered manually, checks out `main`, creates the next semantic version tag, and produces an unsigned versioned `.dmg` for distribution as a GitHub Release asset.
@@ -73,20 +83,20 @@ xcodebuild test -project Yapa.xcodeproj -scheme Yapa -configuration Debug -only-
 - `Notify Slack on Release` requires a configured `SLACK_BOT_TOKEN` secret.
 - Release notes are generated from merged commits and linked PRs between the previous release tag and the new release tag.
 
-## Versioning
+## Versioning 🔖
 
 - The app displays the current version as `vX.Y.Z (build)` in the launch screen and Help window.
 - The UI reads from bundle metadata, so the running app shows the same version that was stamped during release.
 - Release builds derive `MARKETING_VERSION` from the latest tag on `main` and `CURRENT_PROJECT_VERSION` from the release workflow input or workflow run number.
 - The unsigned release DMG is renamed from `Yapa-<version>-unsigned.dmg` to `Yapa-<version>.dmg` during release.
 
-Recommended branch protection for `main`:
+Recommended branch protection for `main` 🔒:
 
 - Require the `CI` workflow to pass before merging.
 - Require pull requests for all changes.
 - Restrict direct pushes to `main`.
 
-## Keyboard Shortcuts
+## Keyboard Shortcuts ⌨️
 
 - `⌘N` New Note
 - `⌘⇧N` New Project
@@ -98,16 +108,16 @@ Recommended branch protection for `main`:
 - `⌘⇧R` Rename selected note or folder
 - `⌘⇧/` Help
 
-## Features
+## Features 📚
 
-### Vaults and Projects
+### Vaults and Projects 🗃️
 
 - Open or switch the Yapa root folder at any time
 - Persist the selected folder across launches
 - Seed a new empty Yapa folder with `My first project` and `Getting Started.md`
 - Treat each top-level folder in the Yapa root as a project
 
-### Notes and Editing
+### Notes and Editing ✍️
 
 - Create Markdown notes with YAML frontmatter
 - Edit note title and body
@@ -122,7 +132,7 @@ Recommended branch protection for `main`:
 - Toggle the note stats panel
 - Insert formatting snippets and templates from the editor toolbar
 
-### Search and Navigation
+### Search and Navigation 🔍
 
 - Fuzzy search across all notes
 - Tag-aware filtering with `tag:foo` search syntax
@@ -133,13 +143,13 @@ Recommended branch protection for `main`:
 - Recent search history
 - In-document find with live match count
 
-### Metrics and Metadata
+### Metrics and Metadata 📈
 
 - YAML frontmatter fields: `title`, `created`, `modified`, `pinned`, `lastAccessed`, `tags`
 - Editor stats: words, characters, lines, reading time, unique words, sentences, average words per sentence, headings, links, code blocks, last opened, and note size
 - Launch screen metrics for the current workspace
 
-## App Structure
+## App Structure 🧱
 
 - `Yapa/App/YapaApp.swift` app entry point, commands, and Help content
 - `Yapa/Views/ContentView.swift` launch screen and main app shell
