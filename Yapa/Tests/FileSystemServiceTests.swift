@@ -17,6 +17,23 @@ final class FileSystemServiceTests: XCTestCase {
         XCTAssertEqual(service.folderStructure.first?.url.standardizedFileURL, createdURL.standardizedFileURL)
     }
 
+    func testOpenVaultFolderSeedsEmptyVaultWithStarterContent() throws {
+        let rootURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try FileManager.default.createDirectory(at: rootURL, withIntermediateDirectories: true)
+
+        let service = FileSystemService(fileManager: .default)
+        service.openVaultFolder(at: rootURL)
+
+        let projectURL = rootURL.appendingPathComponent("My first project", isDirectory: true)
+        let noteURL = projectURL.appendingPathComponent("Getting Started.md")
+        let markerURL = rootURL.appendingPathComponent(".yapa-seeded")
+
+        XCTAssertTrue(FileManager.default.fileExists(atPath: projectURL.path, isDirectory: nil))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: noteURL.path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: markerURL.path))
+        XCTAssertEqual(service.folderStructure.map(\.name), ["My first project"])
+    }
+
     func testLoadNoteParsesTagsFromFrontmatter() throws {
         let rootURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
         try FileManager.default.createDirectory(at: rootURL, withIntermediateDirectories: true)
