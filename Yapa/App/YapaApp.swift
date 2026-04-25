@@ -49,7 +49,12 @@ struct YapaApp: App {
                     NotificationCenter.default.post(name: .openQuickSwitcher, object: nil)
                 }
                 .keyboardShortcut("k", modifiers: [.command])
-                
+
+                Button("Command Palette") {
+                    NotificationCenter.default.post(name: .openCommandPalette, object: nil)
+                }
+                .keyboardShortcut("p", modifiers: [.command, .shift])
+
                 Button("Insert Template") {
                     NotificationCenter.default.post(name: .insertTemplate, object: nil)
                 }
@@ -59,6 +64,16 @@ struct YapaApp: App {
                     NotificationCenter.default.post(name: .renameSelectedItem, object: nil)
                 }
                 .keyboardShortcut("r", modifiers: [.command, .shift])
+
+                Button("Toggle Pin") {
+                    NotificationCenter.default.post(name: .toggleSelectedItemPin, object: nil)
+                }
+                .keyboardShortcut("p", modifiers: [.command, .shift, .option])
+
+                Button("Move Note") {
+                    NotificationCenter.default.post(name: .moveSelectedNote, object: nil)
+                }
+                .keyboardShortcut("m", modifiers: [.command])
             }
             
             CommandGroup(replacing: .help) {
@@ -162,8 +177,10 @@ private struct YapaHelpView: View {
         - `⌘F` Find in Document
         - `⌘⇧F` Fuzzy Search
         - `⌘K` Quick Open
+        - `⌘⇧P` Command Palette
         - `⌘⇧T` Insert Template
         - `⌘M` Move Note
+        - `⌘⇧⌥P` Toggle Pin
         - `⌘⇧R` Rename item from context menus
         - `⌘⇧/` Open Yapa Help
 
@@ -183,7 +200,10 @@ extension Notification.Name {
     static let createNewFolder = Notification.Name("createNewFolder")
     static let focusSearch = Notification.Name("focusSearch")
     static let openQuickSwitcher = Notification.Name("openQuickSwitcher")
+    static let openCommandPalette = Notification.Name("openCommandPalette")
     static let openFuzzySearch = Notification.Name("openFuzzySearch")
     static let insertTemplate = Notification.Name("insertTemplate")
     static let renameSelectedItem = Notification.Name("renameSelectedItem")
+    static let toggleSelectedItemPin = Notification.Name("toggleSelectedItemPin")
+    static let moveSelectedNote = Notification.Name("moveSelectedNote")
 }
