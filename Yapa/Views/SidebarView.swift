@@ -84,6 +84,13 @@ struct SidebarView: View {
         .onChange(of: fileSystemService.lastCreatedProjectURL) { _, url in
             beginRenamingCreatedProject(at: url)
         }
+        .onReceive(NotificationCenter.default.publisher(for: .renameSelectedItem)) { _ in
+            if let folder = selectedFolder {
+                beginRenaming(folder)
+            } else if let note = selectedNote {
+                beginRenaming(note)
+            }
+        }
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
                 Button(action: createNewNote) {
@@ -513,6 +520,7 @@ struct SidebarView: View {
         editingFolderOriginalName = folder.name
         expandedFolders.insert(url.standardizedFileURL)
     }
+
 }
 
 struct FolderRowView: View {
