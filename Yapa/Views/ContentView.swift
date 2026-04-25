@@ -8,6 +8,7 @@ struct ContentView: View {
     @State private var selectedNote: Note?
     @State private var showSidebar = true
     @State private var showQuickSwitcher = false
+    @State private var showCommandPalette = false
     @State private var showFuzzySearch = false
     @State private var showDocumentFind = false
     @State private var fuzzySearchText = ""
@@ -58,13 +59,16 @@ struct ContentView: View {
         .onChange(of: fileSystemService.recentNotes.first?.fileURL.standardizedFileURL) { _, _ in
             restoreLastOpenedNoteIfNeeded()
         }
-        .sheet(isPresented: $showQuickSwitcher) {
-            QuickSwitcherView(
-                isPresented: $showQuickSwitcher,
-                selectedNote: $selectedNote
-            )
-            .environmentObject(fileSystemService)
-        }
+            .sheet(isPresented: $showQuickSwitcher) {
+                QuickSwitcherView(
+                    isPresented: $showQuickSwitcher,
+                    selectedNote: $selectedNote
+                )
+                .environmentObject(fileSystemService)
+            }
+            .sheet(isPresented: $showCommandPalette) {
+                CommandPaletteView(items: commandPaletteItems, isPresented: $showCommandPalette)
+            }
     }
     
     private var mainContent: some View {
@@ -156,6 +160,16 @@ struct ContentView: View {
         }
 
         NotificationCenter.default.addObserver(
+            forName: .openCommandPalette,
+            object: nil,
+            queue: .main
+        ) { _ in
+            showQuickSwitcher = false
+            showFuzzySearch = false
+            showCommandPalette = true
+        }
+
+        NotificationCenter.default.addObserver(
             forName: .openFuzzySearch,
             object: nil,
             queue: .main
@@ -198,9 +212,28 @@ struct ContentView: View {
     private func openFuzzySearch() {
         guard fileSystemService.rootFolder != nil else { return }
         showQuickSwitcher = false
+        showCommandPalette = false
         showFuzzySearch = true
         fuzzySearchText = ""
         selectedNote = nil
+    }
+
+    private var commandPaletteItems: [CommandPaletteItem] {
+        CommandPaletteRegistry.items(context: CommandPaletteContext(
+            selectedNote: selectedNote,
+            recentNotes: fileSystemService.recentNotes,
+            onCreateNote: createNewNote,
+            onCreateFolder: createNewFolder,
+            onOpenQuickSwitcher: { showQuickSwitcher = true },
+            onOpenFuzzySearch: openFuzzySearch,
+            onOpenFindInDocument: { showDocumentFind = true },
+            onOpenVault: { fileSystemService.selectRootFolder() },
+            onInsertTemplate: { NotificationCenter.default.post(name: .insertTemplate, object: nil) },
+            onRenameSelectedItem: { NotificationCenter.default.post(name: .renameSelectedItem, object: nil) },
+            onToggleSelectedItemPin: { NotificationCenter.default.post(name: .toggleSelectedItemPin, object: nil) },
+            onMoveSelectedNote: { NotificationCenter.default.post(name: .moveSelectedNote, object: nil) },
+            onOpenRecentNote: openRecentNote
+        ))
     }
 
     private func restoreLastOpenedNoteIfNeeded() {

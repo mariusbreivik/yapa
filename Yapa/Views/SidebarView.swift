@@ -2,6 +2,16 @@ import SwiftUI
 import UniformTypeIdentifiers
 import CoreTransferable
 
+enum SidebarCommands: CommandPaletteRegistration {
+    static func register(into items: inout [CommandPaletteItem], context: CommandPaletteContext) {
+        guard context.selectedNote != nil else { return }
+
+        items.append(
+            CommandPaletteItem(title: "Rename Item", subtitle: "Rename the selected note or folder", keywords: ["rename", "title", "folder", "note"], systemImage: "pencil", action: context.onRenameSelectedItem)
+        )
+    }
+}
+
 public enum SidebarTreeIndentation {
     public static func leadingPadding(forDepth depth: Int) -> CGFloat {
         guard depth > 1 else {

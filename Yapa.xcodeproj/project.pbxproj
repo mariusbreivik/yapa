@@ -19,6 +19,9 @@
 		29914D252F8D8EE400E27951 /* Quick Note.md in Resources */ = {isa = PBXBuildFile; fileRef = 29914D212F8D8EDE00E27951 /* Quick Note.md */; };
 		29914D262F8D8EE500E27951 /* Weekly Review.md in Resources */ = {isa = PBXBuildFile; fileRef = 29914D222F8D8EE100E27951 /* Weekly Review.md */; };
 		29914D262F92228600E27951 /* AppVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29914D252F92228600E27951 /* AppVersionTests.swift */; };
+		29914D282F9D405D00E27951 /* CommandPaletteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29914D272F9D405D00E27951 /* CommandPaletteView.swift */; };
+		29914D2A2F9D475100E27951 /* CommandPaletteRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29914D292F9D475100E27951 /* CommandPaletteRegistry.swift */; };
+		29914D2C2F9D475100E27951 /* CommandPaletteGeneralCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29914D2B2F9D475100E27951 /* CommandPaletteGeneralCommands.swift */; };
 		59BBD69D11EC6CBB47B3A84E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E09C0564075B89A975BB7796 /* Assets.xcassets */; };
 		5DA9FCB6762F09CFED9F6379 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = B969CB7510EA2516EB29CDCC /* SQLite */; };
 		67F91C71BD8A01D49FD38F28 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD7019DF752FBFC03ADBDB0 /* SearchResultsView.swift */; };
@@ -58,6 +61,9 @@
 		29914D222F8D8EE100E27951 /* Weekly Review.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "Weekly Review.md"; sourceTree = "<group>"; };
 		29914D232F92228600E27951 /* AppVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
 		29914D252F92228600E27951 /* AppVersionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersionTests.swift; sourceTree = "<group>"; };
+		29914D272F9D405D00E27951 /* CommandPaletteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandPaletteView.swift; sourceTree = "<group>"; };
+		29914D292F9D475100E27951 /* CommandPaletteRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandPaletteRegistry.swift; sourceTree = "<group>"; };
+		29914D2B2F9D475100E27951 /* CommandPaletteGeneralCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandPaletteGeneralCommands.swift; sourceTree = "<group>"; };
 		2C8E1DEE90C7C46DE4EB405C /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		4BF08EC4CAC7EC1EA72E7FA1 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		5EFEE10C9CD6A6B0ED8DB2AC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -114,6 +120,9 @@
 				1DD7019DF752FBFC03ADBDB0 /* SearchResultsView.swift */,
 				4BF08EC4CAC7EC1EA72E7FA1 /* SidebarView.swift */,
 				BBCC11223344556677889900 /* QuickSwitcherView.swift */,
+				29914D272F9D405D00E27951 /* CommandPaletteView.swift */,
+				29914D292F9D475100E27951 /* CommandPaletteRegistry.swift */,
+				29914D2B2F9D475100E27951 /* CommandPaletteGeneralCommands.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -306,6 +315,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0BF8B0C5F61C79282E3319E9 /* ContentView.swift in Sources */,
+				29914D282F9D405D00E27951 /* CommandPaletteView.swift in Sources */,
 				10BD20027BA6EAFD1D625917 /* EditorView.swift in Sources */,
 				93249775ABB663276CC72B91 /* FileSystemService.swift in Sources */,
 				B1B1B1B1B1B1B1B1B1B1B1B1 /* SearchQuerySanitizer.swift in Sources */,
@@ -314,7 +324,9 @@
 				29914D242F92228600E27951 /* AppVersion.swift in Sources */,
 				67F91C71BD8A01D49FD38F28 /* SearchResultsView.swift in Sources */,
 				E316B795982C407D17EACEFC /* SearchService.swift in Sources */,
+				29914D2A2F9D475100E27951 /* CommandPaletteRegistry.swift in Sources */,
 				973A43EBA26749AE57C46DE4 /* SidebarView.swift in Sources */,
+				29914D2C2F9D475100E27951 /* CommandPaletteGeneralCommands.swift in Sources */,
 				70DB64EDF4D238EF1099F7AE /* YapaApp.swift in Sources */,
 				AABB11223344556677889900 /* QuickSwitcherView.swift in Sources */,
 			);
@@ -351,9 +363,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGN_ENTITLEMENTS = Yapa/Resources/YapaDebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CODE_SIGNING_ALLOWED = NO;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
@@ -475,18 +487,22 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_STYLE = Automatic;
 				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yapa.app.tests;
 				PRODUCT_NAME = YapaTests;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Yapa.app/Contents/MacOS/Yapa";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.9;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Yapa.app/Contents/MacOS/Yapa";
 			};
 			name = Debug;
 		};
@@ -499,13 +515,17 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yapa.app.tests;
 				PRODUCT_NAME = YapaTests;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Yapa.app/Contents/MacOS/Yapa";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.9;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Yapa.app/Contents/MacOS/Yapa";
 			};
 			name = Release;
 		};

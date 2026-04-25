@@ -3,6 +3,18 @@ import AppKit
 import WebKit
 import Down
 
+enum EditorCommands: CommandPaletteRegistration {
+    static func register(into items: inout [CommandPaletteItem], context: CommandPaletteContext) {
+        guard let note = context.selectedNote else { return }
+
+        items.append(contentsOf: [
+            CommandPaletteItem(title: "Find in Document", subtitle: note.displayTitle, keywords: ["find", "document", "current note"], systemImage: "magnifyingglass", action: context.onOpenFindInDocument),
+            CommandPaletteItem(title: "Toggle Pin", subtitle: note.isPinned ? "Unpin the current note" : "Pin the current note", keywords: ["pin", "unpin", "favorite"], systemImage: note.isPinned ? "pin.fill" : "pin", action: context.onToggleSelectedItemPin),
+            CommandPaletteItem(title: "Move Note", subtitle: "Move the current note to another folder", keywords: ["move", "note", "folder"], systemImage: "folder", action: context.onMoveSelectedNote)
+        ])
+    }
+}
+
 struct EditorView: View {
     @EnvironmentObject var fileSystemService: FileSystemService
     
@@ -106,6 +118,12 @@ struct EditorView: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: .insertTemplate)) { _ in
             showTemplatePicker = true
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .moveSelectedNote)) { _ in
+            showMovePicker = true
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .toggleSelectedItemPin)) { _ in
+            togglePin()
         }
     }
     
