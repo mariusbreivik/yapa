@@ -1,0 +1,32 @@
+{
+  "template": "## Yapa #{{TO_TAG}}\n\n#{{CHANGELOG}}\n\n<details>\n<summary>Release stats</summary>\n\n- From: #{{FROM_TAG}}\n- To: #{{TO_TAG}}\n- Contributors: #{{CONTRIBUTORS}}\n- Diff: #{{RELEASE_DIFF}}\n\n</details>",
+  "categories": [
+    {
+      "title": "### Added",
+      "labels": ["feature", "enhancement"]
+    },
+    {
+      "title": "### Fixed",
+      "labels": ["fix", "bug", "bugfix"]
+    },
+    {
+      "title": "### Changed",
+      "labels": ["chore", "refactor", "maintenance"]
+    },
+    {
+      "title": "### Docs",
+      "labels": ["docs"]
+    },
+    {
+      "title": "### Dependencies",
+      "labels": ["dependencies", "deps"]
+    }
+  ],
+  "ignore_labels": ["skip-changelog"],
+  "sort": {
+    "order": "DESC",
+    "on_property": "mergedAt"
+  },
+  "pr_template": "- #{{TITLE}} (#{{NUMBER}}) by @#{{AUTHOR}}",
+  "empty_template": "- No changes"
+}
