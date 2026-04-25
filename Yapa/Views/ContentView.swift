@@ -259,13 +259,17 @@ struct ContentView: View {
     }
 
     private func projectRoot(containing url: URL) -> FolderItem? {
-        let targetPath = url.standardizedFileURL.path
-        return fileSystemService.folderStructure.first { project in
-            let projectPath = project.url.standardizedFileURL.path
-            return targetPath == projectPath || targetPath.hasPrefix(projectPath + "/")
-        }
+        Yapa.projectRoot(containing: url, in: fileSystemService.folderStructure)
     }
 
+}
+
+func projectRoot(containing url: URL, in folderStructure: [FolderItem]) -> FolderItem? {
+    let targetPath = url.standardizedFileURL.path
+    return folderStructure.first { project in
+        let projectPath = project.url.standardizedFileURL.path
+        return targetPath == projectPath || targetPath.hasPrefix(projectPath + "/")
+    }
 }
 
 struct LaunchScreenView: View {

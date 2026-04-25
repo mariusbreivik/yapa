@@ -12,6 +12,7 @@
 		29914D192F8BEBC500E27951 /* SearchQuerySanitizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B2B2B2B2B2B2B2B2B2B2B2 /* SearchQuerySanitizer.swift */; };
 		29914D1B2F8C232F00E27951 /* FileSystemServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29914D1A2F8C232F00E27951 /* FileSystemServiceTests.swift */; };
 		29914D1D2F8D57EA00E27951 /* SidebarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29914D1C2F8D57EA00E27951 /* SidebarViewTests.swift */; };
+		29914D1E2F8D57EA00E27951 /* ContentViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29914D1F2F8D57EA00E27951 /* ContentViewTests.swift */; };
 		29914D232F8D8EE200E27951 /* Meeting Note.md in Resources */ = {isa = PBXBuildFile; fileRef = 29914D1F2F8D8EDA00E27951 /* Meeting Note.md */; };
 		29914D242F8D8EE300E27951 /* Daily Standup.md in Resources */ = {isa = PBXBuildFile; fileRef = 29914D202F8D8EDC00E27951 /* Daily Standup.md */; };
 		29914D242F92228600E27951 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29914D232F92228600E27951 /* AppVersion.swift */; };
@@ -50,6 +51,7 @@
 		2010061293DB5B657A4217A4 /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
 		29914D1A2F8C232F00E27951 /* FileSystemServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemServiceTests.swift; sourceTree = "<group>"; };
 		29914D1C2F8D57EA00E27951 /* SidebarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarViewTests.swift; sourceTree = "<group>"; };
+		29914D1F2F8D57EA00E27951 /* ContentViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewTests.swift; sourceTree = "<group>"; };
 		29914D1F2F8D8EDA00E27951 /* Meeting Note.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "Meeting Note.md"; sourceTree = "<group>"; };
 		29914D202F8D8EDC00E27951 /* Daily Standup.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "Daily Standup.md"; sourceTree = "<group>"; };
 		29914D212F8D8EDE00E27951 /* Quick Note.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "Quick Note.md"; sourceTree = "<group>"; };
@@ -188,6 +190,7 @@
 		EE0011223344556677889900 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				29914D1F2F8D57EA00E27951 /* ContentViewTests.swift */,
 				DDEE11223344556677889900 /* SearchServiceTests.swift */,
 				29914D1A2F8C232F00E27951 /* FileSystemServiceTests.swift */,
 				29914D1C2F8D57EA00E27951 /* SidebarViewTests.swift */,
@@ -322,6 +325,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CCDD11223344556677889900 /* SearchServiceTests.swift in Sources */,
+				29914D1E2F8D57EA00E27951 /* ContentViewTests.swift in Sources */,
 				29914D1D2F8D57EA00E27951 /* SidebarViewTests.swift in Sources */,
 				29914D262F92228600E27951 /* AppVersionTests.swift in Sources */,
 				29914D192F8BEBC500E27951 /* SearchQuerySanitizer.swift in Sources */,
