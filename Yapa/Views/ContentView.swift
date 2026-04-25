@@ -16,10 +16,11 @@ struct ContentView: View {
     var body: some View {
         Group {
             if fileSystemService.rootFolder == nil {
-                 LaunchScreenView(
-                     workspaceName: nil,
-                     projectName: nil,
-                     noteCount: fileSystemService.allNotes.count,
+                  LaunchScreenView(
+                      workspaceName: nil,
+                      projectName: nil,
+                      vaultLocation: nil,
+                      noteCount: fileSystemService.allNotes.count,
                      wordCount: fileSystemService.totalWordCount,
                      characterCount: fileSystemService.totalCharacterCount,
                      totalVaultSizeBytes: fileSystemService.totalVaultSizeBytes,
@@ -93,6 +94,7 @@ struct ContentView: View {
                 LaunchScreenView(
                     workspaceName: fileSystemService.rootFolder?.lastPathComponent,
                     projectName: project.name,
+                      vaultLocation: vaultLocationText(for: fileSystemService.rootFolder),
                     noteCount: fileSystemService.allNotes.count,
                     wordCount: fileSystemService.totalWordCount,
                     characterCount: fileSystemService.totalCharacterCount,
@@ -272,9 +274,39 @@ func projectRoot(containing url: URL, in folderStructure: [FolderItem]) -> Folde
     }
 }
 
+func vaultLocationText(for url: URL?) -> String? {
+    url?.standardizedFileURL.path
+}
+
+func pathBadge(text: String, fillOpacity: Double, strokeOpacity: Double, iconOpacity: Double) -> some View {
+    Label {
+        Text(text)
+            .font(.caption)
+            .monospaced()
+            .lineLimit(1)
+            .truncationMode(.middle)
+    } icon: {
+        Image(systemName: "externaldrive")
+            .font(.caption2.weight(.semibold))
+            .foregroundStyle(Color.orange.opacity(iconOpacity))
+    }
+    .padding(.horizontal, 10)
+    .padding(.vertical, 6)
+    .background(
+        Capsule(style: .continuous)
+            .fill(Color.orange.opacity(fillOpacity))
+    )
+    .overlay(
+        Capsule(style: .continuous)
+            .stroke(Color.orange.opacity(strokeOpacity), lineWidth: 1)
+    )
+    .foregroundStyle(Color.orange.opacity(0.92))
+}
+
 struct LaunchScreenView: View {
     let workspaceName: String?
     let projectName: String?
+    let vaultLocation: String?
     let noteCount: Int
     let wordCount: Int
     let characterCount: Int
@@ -310,9 +342,15 @@ struct LaunchScreenView: View {
                         .foregroundColor(.accentColor)
                         .symbolEffect(.pulse, isActive: true)
 
-                    Text(isVaultOpen ? (projectName ?? workspaceName ?? "Yapa") : "Welcome to Yapa")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
+                    VStack(spacing: 2) {
+                        Text(isVaultOpen ? (projectName ?? workspaceName ?? "Yapa") : "Welcome to Yapa")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+
+                        if isVaultOpen, let vaultLocation {
+                            pathBadge(text: vaultLocation, fillOpacity: 0.12, strokeOpacity: 0.22, iconOpacity: 0.9)
+                        }
+                    }
 
                     Text(isVaultOpen ? "Continue where you left off or create something new" : "Open a Yapa folder to start writing")
                         .font(.title3)

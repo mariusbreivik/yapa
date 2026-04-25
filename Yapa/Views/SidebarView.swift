@@ -69,7 +69,7 @@ struct SidebarView: View {
                     recentSection
                     foldersSection
                 }
-                .padding(.horizontal, 8)
+                .padding(.horizontal, 16)
                 .padding(.bottom, 8)
             }
         }
@@ -114,20 +114,24 @@ struct SidebarView: View {
     }
 
     private var yapaHeader: some View {
-        HStack(spacing: 12) {
+        HStack(alignment: .top, spacing: 12) {
             ZStack {
                 RoundedRectangle(cornerRadius: 12)
                     .fill(Color(red: 0.31, green: 0.33, blue: 0.63))
                 Image(systemName: "folder.badge.gearshape")
-                    .font(.system(size: 20, weight: .semibold))
+                    .font(.system(size: 24, weight: .semibold))
                     .foregroundColor(Color.black.opacity(0.88))
             }
-            .frame(width: 44, height: 44)
+            .frame(width: 76, height: 76)
             
             VStack(alignment: .leading, spacing: 3) {
                 Text(fileSystemService.rootFolder?.lastPathComponent ?? "Yapa")
                     .font(.headline)
                     .lineLimit(1)
+
+                if let vaultLocation = vaultLocationText(for: fileSystemService.rootFolder) {
+                    pathBadge(text: vaultLocation, fillOpacity: 0.07, strokeOpacity: 0.14, iconOpacity: 0.7)
+                }
                 
                 HStack(spacing: 6) {
                     statPill(value: "\(fileSystemService.projectCount)", symbol: "folder", tooltip: "Top-level project folders in this Yapa workspace")
@@ -141,12 +145,15 @@ struct SidebarView: View {
             
             Spacer()
         }
-        .padding(12)
+        .padding(.vertical, 12)
+        .padding(.leading, 16)
+        .padding(.trailing, 12)
         .background(
             RoundedRectangle(cornerRadius: 14)
                 .fill(Color(nsColor: .windowBackgroundColor))
         )
-        .padding([.horizontal, .top], 8)
+        .padding(.trailing, 8)
+        .padding(.top, 8)
     }
     
     private var pinnedSection: some View {

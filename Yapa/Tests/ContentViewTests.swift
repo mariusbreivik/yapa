@@ -18,4 +18,10 @@ final class ContentViewTests: XCTestCase {
 
         XCTAssertNil(projectRoot(containing: outside, in: [project]))
     }
+
+    func testVaultLocationTextReturnsStandardizedPath() {
+        let url = URL(fileURLWithPath: "/tmp/yapa/Project/../Project", isDirectory: true)
+
+        XCTAssertEqual(vaultLocationText(for: url), "/tmp/yapa/Project")
+    }
 }
