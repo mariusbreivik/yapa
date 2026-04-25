@@ -30,7 +30,7 @@ jobs:
             core.setOutput('url', release.html_url)
 
       - name: Send Slack notification
-        uses: slackapi/slack-github-action@v1.27.0
+        uses: slackapi/slack-github-action@v3.0.2
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         with:
