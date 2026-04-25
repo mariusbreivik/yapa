@@ -133,28 +133,28 @@ private struct YapaHelpView: View {
 
     private var yapaHelpMarkdown: String {
         """
-        # Yapa Help
+        # Yapa Help ✨
 
         Yapa is a local-first macOS Markdown notes app. Your notes stay in a folder you choose, and the app treats each top-level folder as a project.
 
-        ## Core Features
+        ## Core Features 📚
 
-        - Plain Markdown notes stored in the filesystem
-        - YAML frontmatter metadata for title and timestamps
-        - Sidebar with projects, pinned notes, and recent notes
-        - Drag and drop for moving folders and notes
-        - Markdown preview and note statistics
-        - Quick Open and Fuzzy Search for fast navigation
-        - Autosave while editing
+        - 🗂️ Plain Markdown notes stored in the filesystem
+        - 🧾 YAML frontmatter metadata for title, timestamps, and tags
+        - 📌 Sidebar with projects, pinned notes, and recent notes
+        - 🖱️ Drag and drop for moving folders and notes
+        - 📝 Markdown preview and note statistics
+        - 🚀 Quick Open and Fuzzy Search for fast navigation
+        - 💾 Autosave while editing
 
-        ## How Yapa Is Organized
+        ## How Yapa Is Organized 🧩
 
         - A Yapa folder is the root folder you open in the app
         - Each top-level folder is shown as a project
         - Notes are `.md` files inside those project folders
         - Search indexes your notes locally using SQLite FTS5
 
-        ## Keyboard Shortcuts
+        ## Keyboard Shortcuts ⌨️
 
         - `⌘N` New Note
         - `⌘⇧N` New Project
@@ -162,11 +162,12 @@ private struct YapaHelpView: View {
         - `⌘F` Find in Document
         - `⌘⇧F` Fuzzy Search
         - `⌘K` Quick Open
+        - `⌘⇧T` Insert Template
         - `⌘M` Move Note
         - `⌘⇧R` Rename item from context menus
         - `⌘⇧/` Open Yapa Help
 
-        ## Tips
+        ## Tips 💡
 
         - Use the top toolbar in the sidebar to create notes, create projects, or change the Yapa root folder.
         - New notes focus the title field automatically so you can start naming them immediately.
