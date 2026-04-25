@@ -34,6 +34,7 @@ Yapa is a local-first macOS Markdown notes app built with SwiftUI. Notes stay as
 - `Templates/` contains the built-in note templates shipped in the app bundle.
 - `Yapa/Resources/` contains app icon, Info.plist, and entitlements files.
 - Release builds use the version metadata stamped into the bundle.
+- Release notes are generated from merged PRs, and `.github/release-changelog-builder.config.json` matches Conventional Commit-style PR titles like `fix:` and `docs:`.
 
 ## Development 🧪
 

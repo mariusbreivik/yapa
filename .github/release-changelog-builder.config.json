@@ -3,23 +3,53 @@
   "categories": [
     {
       "title": "### Added",
-      "labels": ["feature", "enhancement"]
+      "labels": ["feature", "enhancement"],
+      "rules": [
+        {
+          "pattern": "^feat(\\(|:)",
+          "on_property": "title"
+        }
+      ]
     },
     {
       "title": "### Fixed",
-      "labels": ["fix", "bug", "bugfix"]
+      "labels": ["fix", "bug", "bugfix"],
+      "rules": [
+        {
+          "pattern": "^fix(\\(|:)",
+          "on_property": "title"
+        }
+      ]
     },
     {
       "title": "### Changed",
-      "labels": ["chore", "refactor", "maintenance"]
+      "labels": ["chore", "refactor", "maintenance"],
+      "rules": [
+        {
+          "pattern": "^(chore|refactor)(\\(|:)",
+          "on_property": "title"
+        }
+      ]
     },
     {
       "title": "### Docs",
-      "labels": ["docs"]
+      "labels": ["docs"],
+      "rules": [
+        {
+          "pattern": "^docs(\\(|:)",
+          "on_property": "title"
+        }
+      ]
     },
     {
       "title": "### Dependencies",
-      "labels": ["dependencies", "deps"]
+      "labels": ["dependencies", "deps"],
+      "rules": [
+        {
+          "pattern": "^(deps|build|ci)(\\(|:)",
+          "on_property": "title"
+        }
+      ]
     }
   ],
   "ignore_labels": ["skip-changelog"],
