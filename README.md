@@ -25,6 +25,13 @@ Open `Yapa.xcodeproj` in Xcode, then choose a folder for your Yapa root when the
 
 `project.yml` is the source of truth for target, dependency, and scheme changes.
 
+## Development
+
+- Open `Yapa.xcodeproj` in Xcode and work from the `Yapa` scheme
+- Build from the command line with `xcodebuild -project Yapa.xcodeproj -scheme Yapa -configuration Debug build`
+- Run the full test suite with `xcodebuild test -project Yapa.xcodeproj -scheme Yapa -configuration Debug`
+- Check Xcode's Issue Navigator before shipping changes, especially after editing search, file system, or release code
+
 ## Build
 
 ```bash
@@ -47,6 +54,14 @@ xcodebuild test -project Yapa.xcodeproj -scheme Yapa -configuration Debug -only-
 
 - `swift Scripts/GenerateAppIcon.swift` regenerates the app icon set in `Yapa/Resources/Assets.xcassets/AppIcon.appiconset`
 - `bash Scripts/build-unsigned-dmg.sh` builds a release app and writes `dist/Yapa-<version>-unsigned.dmg`
+- `Scripts/build-unsigned-dmg.sh` accepts optional `MARKETING_VERSION` and `CURRENT_PROJECT_VERSION` environment variables
+- The DMG script requires a macOS build machine with `xcodebuild`, `ditto`, and `hdiutil`
+
+## Templates
+
+- Built-in note templates live in `Templates/`
+- The shipped templates are `Quick Note.md`, `Daily Standup.md`, `Meeting Note.md`, and `Weekly Review.md`
+- Add new templates by placing additional `.md` files in that folder
 
 ## GitHub Actions
 
@@ -56,12 +71,15 @@ xcodebuild test -project Yapa.xcodeproj -scheme Yapa -configuration Debug -only-
 - `Notify Slack on Release` runs after the `Release` workflow completes successfully and posts release details to Slack.
 - The release workflow accepts an optional `build_number` input.
 - Conventional Commit-style PR titles drive semver bumps: `feat:` for minor, `fix:` for patch, and `feat!:` or `BREAKING CHANGE:` for major.
+- `Notify Slack on Release` requires a configured `SLACK_BOT_TOKEN` secret.
+- Release notes are generated from merged commits and linked PRs between the latest tag and `HEAD`.
 
 ## Versioning
 
 - The app displays the current version as `vX.Y.Z (build)` in the launch screen and Help window.
 - The UI reads from bundle metadata, so the running app shows the same version that was stamped during release.
 - Release builds derive `MARKETING_VERSION` from the latest tag on `main` and `CURRENT_PROJECT_VERSION` from the release workflow input or workflow run number.
+- The unsigned release DMG is renamed from `Yapa-<version>-unsigned.dmg` to `Yapa-<version>.dmg` during release.
 
 Recommended branch protection for `main`:
 
