@@ -54,6 +54,11 @@ struct YapaApp: App {
                     NotificationCenter.default.post(name: .insertTemplate, object: nil)
                 }
                 .keyboardShortcut("t", modifiers: [.command, .shift])
+
+                Button("Rename Item") {
+                    NotificationCenter.default.post(name: .renameSelectedItem, object: nil)
+                }
+                .keyboardShortcut("r", modifiers: [.command, .shift])
             }
             
             CommandGroup(replacing: .help) {
@@ -179,4 +184,5 @@ extension Notification.Name {
     static let openQuickSwitcher = Notification.Name("openQuickSwitcher")
     static let openFuzzySearch = Notification.Name("openFuzzySearch")
     static let insertTemplate = Notification.Name("insertTemplate")
+    static let renameSelectedItem = Notification.Name("renameSelectedItem")
 }
