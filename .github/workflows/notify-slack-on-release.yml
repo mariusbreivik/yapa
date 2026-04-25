@@ -34,8 +34,9 @@ jobs:
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         with:
-          channel-id: C0ATTTJNA7N
+          method: chat.postMessage
           payload: |
             {
+              "channel": "${{ vars.SLACK_CHANNEL_ID }}",
               "text": ":rocket: New Yapa release published: *${{ steps.release.outputs.name }}*\n<${{ steps.release.outputs.url }}|View release>\nTag: `${{ steps.release.outputs.tag }}`"
             }
