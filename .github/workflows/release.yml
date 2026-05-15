@@ -104,7 +104,7 @@ jobs:
           configuration: .github/release-changelog-builder.config.json
 
       - name: Create GitHub release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ steps.release_tag.outputs.tag }}
           name: Yapa ${{ steps.release_tag.outputs.tag }}
